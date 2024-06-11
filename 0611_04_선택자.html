@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>태그</title>
+    <style>
+      * {
+        border: 1px solid #000;
+      }
+      /* solid는 네모칸, px은 칸 두께 */
+      body a {
+      }
+      p > a {
+        color: green;
+      }
+      /* 상위, 하위 안에 있는 것 적용 */
+      p > span > a {
+        color: pink;
+      }
+      .first + span {
+        color: red;
+      }
+      .second + span {
+        color: gray;
+      }
+      /* p>span ~ span {color: red;} */
+      a {
+        background-color: yellow;
+      }
+      h1 + p {
+        background-color: aqua;
+      }
+      /* 태그할때는 ","로 하고 포함되는애만 적용됌 */
+      /* 하나만 적용하고 싶을 땐 형제선택자로 +넣기 */
+    </style>
+  </head>
+  <body>
+    <h1>제목태그</h1>
+    <p>문단태그</p>
+    <a href="">링크태그</a>
+    <p>
+      <span class="first">span태그</span>
+      <span class="second">span태그</span>
+      <span>span태그</span>
+      <span>span태그</span>
+      <a href="">링크태그</a>
+      <span>
+        <a href="">링크태그</a>
+      </span>
+    </p>
+  </body>
+</html>
