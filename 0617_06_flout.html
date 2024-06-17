@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin: 0; padding: 0;}
+        .wrap{width:1200px; margin: 0 auto;}
+        .one{height: 100px;background-color: red;}
+        .two{height: 100px;background-color: blue;}
+        .third{height: 500px;}
+        .third>div{float: left;height: 100%;}
+        .three{width: 20%; background-color: green;}
+        .four{width: 70%; background-color: pink;}
+        .five{width: 10%;background-color: green;}
+        .six{height: 100px; background-color: blue;}
+    </style>
+</head>
+<body>
+    <div class="warp">
+        <div class="one">1</div> 
+        <div class="two">2</div>
+        <div class="third">
+            <div class="three">3</div>
+            <div class="four">4</div>
+            <div class="five">5</div>
+    </div>
+        <div class="six">6</div>
+    </div>
+    <!-- 하나의 공간에 3개가 있으니 그룹으로 묶어 준다(ctrl+w)-->
+    <!-- /* float이 옆으로 옮기는 애 */ -->
+</body>
+</html>
+<!-- 내가한거 -->
+<!-- .parent{width: 1000px; margin: 0 auto; position: absolute;}
+.parent>div{height: 100px; width: 1200px; position: relative;}
+.one>div{}
+.one>div:nth-child(1){height: 100px;width: 1200px;}
+.two>div:nth-child(2){height: 100px;width: 1200px;}
+.three>div:nth-child(3){height: 100px; width: 1200px;}
+.one>div:nth-child(1){ background-color: red;}
+.two>div:nth-child(2){width: 0px; background-color: blue;}
+.three>div:nth-child(3){float: left; background-color: green;} -->
