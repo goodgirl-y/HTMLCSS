@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        .parent{width: 1200px;margin: 0 auto;height: 100%;position: ;}
+        /* 포지션에 따라 적용이 되는게 있고 안되는게 있음 */
+        .parent>div{width: 50%;float: left;font-weight: bold;}
+        .left{background-color: yellow;}
+        .right{background-color: blue;}
+        h6:nth-of-type(1){text-transform: uppercase;line-height: 2;}
+        /* px단위 안넣고 그냥 숫자만 넣으면 그 숫자의 두배가 됨 */
+        h6:nth-of-type(2){font-weight: normal;font-style: italic;font-variant: small-caps;}
+        /* italic 기울이기 */
+        span{
+            /* font:italic small-caps bold 20px/0.5em 돋움, sans-serif; */
+        /* 순서대로 해야 적용가능/ 크기 구분은 "/" 넣어야함 */
+        font:20px 돋움;}
+    </style>
+</head>
+<body>
+    <p>그린컴퓨터아트학원web design</p>
+    <p>web design</p>
+    <div class="parent">parent
+        <div class="left">child</div>
+        <div class="right">child</div>
+    </div>
+    <p>문단태그</p>
+    <h6>제목태그</h6>
+    <h6>제목태그</h6>
+</body>
+</html>
