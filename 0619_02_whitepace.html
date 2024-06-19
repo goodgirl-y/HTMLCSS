@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        p{width: 300px;border: 1px solid;margin: 20px;}
+        p:nth-child(1){white-space: normal;}
+        /* ㄴ연속 공백, 길면 줄바꿈 일어남 */
+        p:nth-child(2){white-space: nowrap;}
+        /* ㄴ위와 =, 길어도 줄바꿈 X(부모가 감싸지 않는다 -no wrap)  */
+        p:nth-child(3){white-space: pre;}
+        /* ㄴ연속 공백들과 줄바꿈이 소스 그대로 표현됨 */
+        p:nth-child(4){white-space: pre-wrap;}
+        /* ㄴ위와 =, 길면 줄바꿈 일어남 */
+        p:nth-child(5){white-space: pre-line;}
+        /* ㄴ연속 공백이 하나의 공백, 줄바꿈은 소스 그대로 표현, 길면 줄바꿈 일어남 */
+        div{width: 300px;border: 1px solid;white-space: nowrap;text-overflow: ellipsis;visibility: visible;opacity: 0.1;}
+        /* visible;opacity는 투명도 0.?으로 시작 */
+    </style>
+</head>
+<body>
+<p>L            orem
+    Ipsum is simply dummy text of the printing and typesetting industry.</p>
+<p>L            orem
+    Ipsum is simply dummy text of the printing and typesetting industry.</p>
+<p>L            orem
+    Ipsum is simply dummy text of the printing and typesetting industry.</p>
+<p>L            orem
+    Ipsum is simply dummy text of the printing and typesetting industry.</p>
+    <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
+    <!-- head시작 -->
+<header></header>
+<div class="head"></div>
+<!-- header는 문서 상단에 위치 -->
+    <!-- head끝 -->
+    <!-- meau시작 -->
+    <main></main>
+<nav></nav>
+<div class="meau"></div>
+    <!-- meau끝 -->
+    <div class="foot"></div>
+    <footer></footer>
+</body>
+</html>
