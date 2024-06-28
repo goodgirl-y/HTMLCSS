@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>madforgarlic</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        ul{list-style: none;}
+        a{color: #000;text-decoration: none;}
+        header{}
+        .topMenu{background-color: #666;}
+        .top{width: 1000px;margin: 0 auto;overflow: hidden;}
+        .top ul{float: right;}
+        .top ul li{float: left;}
+        .top ul li a{color: #fff;text-transform: uppercase;padding: 0 10px;height: 30px;display: block;line-height: 30px;}
+        /* display를 주면 높이를 가짐(인라인속성은 높이를 못가짐) */
+        .top ul li:nth-child(4) a{background-color: #fff;height: 20px;color: #000;line-height: 20px;margin-top: 5px;}
+        .top ul li a img{vertical-align: middle;}
+        /* uppercase는 대문자로 바꿔줌 */
+        /* 블록태그라 텍스트 얼라인이 안됌 */
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <!-- head 시작
+        <div id="head"></div>
+        head 끝 -->
+    <header>
+        <div class="topMenu">
+            <div class="top">
+            <ul>
+                <li><a href="#">login</a></li>
+                <li><a href="#">join</a></li>
+                <li><a href="#">gust</a></li>
+                <li><a href="#">검색어를 입력해주세요</a></li>
+                <li><a href="#"><img src="images/zoom.png" alt="돋보기"></a></li>
+            </ul>
+        </header>
+        <main></main>
+        <footer></footer>
+    </div>
+</body>
+</html>
