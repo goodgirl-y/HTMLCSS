@@ -17,17 +17,17 @@
         #wrap .logo a{display: block;width: 100%;height: 38px;background-image: url(images//logo.svg);background-repeat: no-repeat;background-size: 126px 41px;position: absolute;top: 50%;transform: translateY(-50%);}
         #wrap .menu{float: left;}
         #wrap .menu > ul{height: 100px;}
-        #wrap .menu > ul > li{float: left;position: relative;width: 100px;}
+        #wrap .menu > ul > li{float: left;position: relative;width: 120px;}
         #wrap .menu > ul > li > a{display: block;line-height: 100px;text-align: center;}
         #wrap .menu > ul > li > a::after{content: "";position: absolute;left: 0;bottom: 0;width: 100%;height: 4px;  transform: scaleX(0);transition: 0.5s;}
-        #wrap .menu > ul > li:hover > a::after{transform: scaleX(1);}
+        #wrap .menu > ul > li:hover > a::after{}
         #wrap .menu > ul .sub{height: 0;overflow: hidden;transition: 0.5s;position: absolute;left: 0;top: 100px;width: 100%;z-index: 1;}
-        #wrap .menu > ul:hover .sub{height: 320px;padding: 20px 0;}
+        #wrap .menu > ul:hover .sub{width: 600px; height: 320px;padding: 10px 0;}***
         #wrap .menu > ul .sub li{line-height: 40px;text-align: center;}
-        #wrap .menu > ul>li:hover>a{}
-        #wrap .menu > ul .sub li:hover a{text-decoration: underline;color: olivedrab;}
-        .bg{position: absolute;left: 0;top: 100px;background-color: #fff;width: 100%;height: 0;transition: 0.5s;border-top: 1px solid transparent;}
+        #wrap .menu > ul .sub li:hover a{text-decoration: underline;color: olivedrab;display: block;}
+        .bg{position: absolute;left: 0;top: 100px;background-color: #fff;width: 100%;height: 0;transition: 0.5s;}
         #wrap .menu > ul:hover ~ .bg{height: 320px;border-color: #ccc;}
+        #wrap .menu2{float: right;}
         #wrap .menu2{float: right;}
     </style>
 </head>
