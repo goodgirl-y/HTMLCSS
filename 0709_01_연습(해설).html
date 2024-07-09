@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>our services</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        /* 모든 요소는 마진 패딩 주기 */
+        ul{list-style: none;}
+        a{color: #000000; text-decoration: none;color: #333;}
+        .service{width: 1600px;margin: 0 auto;padding: 50px 0;}
+        .service .left{float: left;}
+        .service .left p{font-style: 120px;}
+        .service .right{float: right;width: 800px;}
+        .service .right>ul{width: 100%;}
+        .service .right>ul>li{line-height: 80px;border-top: 1px solid #333;position: relative;}
+        .service .right>ul>li:last-child{border-bottom: 1px solid #333;}
+        .service .right>ul>li::after{content: "+";position: absolute;left: 95%;top: 0;font-style: 30px;}
+        .service .right>ul>li:hover::after{content: "-";}
+        .service .right>ul>li>a{font-style: 30px;}
+        .service .right>ul>li> .sub{height: 0;overflow: hidden;transition: 0.4s;}
+        .service .right>ul>li:hover .sub{height: 100px;}
+        
+        .wrap{width: 1200px;height: 263px; color: #000000;padding: 32px 0px;}
+        .left{width: 418px;height: 199px;float: left;}
+        p{font-size: 100px;}
+        ul{padding: 15px;}
+        li{text-decoration: none;font-size: 26px;border-bottom: 1px solid #000000;m10}
+        /* .wrap .right > ul > li:nth-child(1){border-top: 1px solid #000000;} */
+        .wrap .left > ul>li:nth-child(1){content: url(images);margin-left: 30px;}
+        .right{width: 547px;float: right;}
+    </style>
+</head>
+<body>
+    <div class="service">
+    <div class="left">
+        <p>Our<br>Services.</p>
+    </div>
+    <div class="right">
+        <ul>
+            <li><a href="#">UX / UI</a>
+            <ul class="sub">
+                <li><a href="#">Concept Proposal / UX Planing / UI Design</a></li>
+            </ul></li>
+        </ul>
+        <ul>
+            <li><a href="#">Motion</a>
+                <ul class="sub">
+                <li><a href="#">Scenario Planning / 2D Motion graphic Design / 3D Modeling & Animation / 3D VFX</a></li>
+            </ul></li>
+        </ul>
+        <ul>
+            <li><a href="#">Production</a>
+                <ul class="sub">
+                <li><a href="#">Pre-Production / Production / Post-Production</a></li>
+            </ul></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
