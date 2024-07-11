@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin: 0; padding: 0;}
+        ul{list-style: none;}
+        a{text-decoration: none;color: #333;}
+        .quickMenu{background: #e2fdfe;}
+        ul.quick{width: 1080px;margin: 50px auto;overflow: hidden;background: #e2fdfe;padding: 50px 0;}
+        ul.quick li{float: left;width: calc(100% / 6);border-right: 1px solid #ccc;box-sizing: border-box;}
+        ul.quick li:last-child{border-right: none;}
+        ul.quick li a{display: block;}
+        ul.quick li a p{text-align: center;}
+        ul.quick li:hover a p:first-child{width: 50px;height: 50px;border-radius: 50%;background: #ddd;margin: 0 auto;}
+        /* 밑에 공간 줄땐 padding */
+    </style>
+</head>
+<body>
+    <div class="quickMenu">
+        <ul class="quick">
+            <li>
+                <a href="#">
+                <p><img src="images/ico_quick_menu1.png" alt="quick"></p>
+                <p>이용대금명세서</p>
+            </a>
+            </li>
+            <li>
+                <a href="#">
+                <p><img src="images/ico_quick_menu1.png" alt="quick"></p>
+                <p>결제예상금액</p>
+                </a>
+                </li>
+            <li>
+                <a href="#">
+                <p><img src="images/ico_quick_menu1.png" alt="quick"></p>
+                <p>이용내역조회</p>
+                </a>
+                </li>
+            <li>
+                <a href="#">
+                <p><img src="images/ico_quick_menu1.png" alt="quick"></p>
+                <p>내정보변경</p>
+                </a>
+                </li>
+            <li>
+                <a href="#">
+                <p><img src="images/ico_quick_menu1.png" alt="quick"></p>
+                <p>카드분실신고</p>
+                </a>
+                </li>
+            <li>
+                <a href="#">
+                <p><img src="images/ico_quick_menu1.png" alt="quick"></p>
+                <p>카드사용등록</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
