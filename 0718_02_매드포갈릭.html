@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        ul{list-style: none;}
+        .review{width: 1264px;padding: 0 40px;}
+        .review ul{display: flex;justify-content: space-evenly;}
+        .review ul li{display: flex;flex-direction: column;justify-content: space-between;width: 399px;}
+        .review ul li>div{position: relative;}
+        .review ul li .inner{display: flex;justify-content: space-between;height: 215px;} .review ul li:first-child,.review ul li:nth-child(3) {width: 399px;float: right;}
+       
+        .review ul li:first-child >div:first-child,.review ul li:nth-child(3)>div:last-child{height: 226px;}
+        .review ul li img{width: 100%;height: 100%;object-fit: cover;}
+        .review ul li:nth-child(2),.review ul li:nth-child(4){height: 399px;}
+        .review ul li:nth-child(2) div{height: 100%;}
+        .review ul li>div{height: 388px;width: 100%;}
+        .review ul li .inner div{width: 399px;height: 388px;position: relative;}
+        .review ul li p{width: 100%;height: 100%;}
+        .review ul li p.box{position: absolute;left: 0;top: 0;background: F;padding: 20px;box-sizing: border-box;justify-content: space-between;display: flex;flex-direction: column;}
+        .review ul li p.box a{color: #000; text-decoration: none;text-align: center;}
+        .review ul li p.box:hover{opacity: 1;}
+        .review ul li p.box a span{display: block;}
+        
+        .review ul li p.box a:last-child:hover{display: block;text-align: right;text-underline-offset: 5px;width: 167px;height: 37px;background-color: #fff;text-align: center;}
+        .review ul li p.box span:first-child{width: 50px;height: 50px;margin: 20px auto 10px;}
+        .review ul li p.box span:last-child, .review ul li .inner p.box span:last-child{color: #fff;font-size: 17px;font-weight: 600;}
+    </style>
+</head>
+<body>
+    <div class="review">
+        <ul>
+            <li>
+                <div>
+                    <p><img src="images/1m.png" alt="1m"></p>
+                    <p class="box">
+                        <a href="#">
+                            <span><img src="images/m-icon_brand.png" alt="BREAD"></span>
+                            <span>BREAD & STARTER</span>
+                        </a>
+                        <a href="#">자세히 보기</a>
+                    </p>
+                </div>
+                    <div>
+                        <p><img src="images/2m.jpg" alt="2m"></p>
+                        <p class="box">
+                            <span><img src="images/m-icon_pizza.png" alt="PIZZA"></span>
+                            <span>PIZZA</span>
+                            <a href="#">자세히 보기</a>
+                        </p>
+                    </div>
+                </li>
+                <li>
+                    <div class="inner"></div>
+                    <div>
+                        <p><img src="images/3m.png" alt="3"></p>
+                        <p class="box">
+                            <a href="#">자세히 보기</a>
+                        </p>
+                    </div>
+                    <div>
+                        <p><img src="images/4m.png" alt="4"></p>
+                        <p class="box">
+                            <a href="#">자세히 보기</a>
+                        </p>
+                    </div>
+                    <div>
+                        <p><img src="images/5m.jpg" alt="5"></p>
+                        <p class="box">
+                            <span><img src="images/m-icon_starter.png" alt="salad"></span>
+                            <span>SALAD</span>
+                            <a href="#">자세히 보기</a>
+                        </p>
+                    </div>
+                </div>
+                </li>
+                <li>
+                        <div>
+                            <p><img src="images/6m.jpg" alt="6"></p>
+                            <p class="box">
+                                <span><img src="images/m-icon_ricerisotto.png" alt="salad"></span>
+                                <span>RICE & RISOTTO</span>
+                                <a href="#">자세히 보기</a>
+                            </p>
+                        </div>
+                        <div>
+                            <p><img src="images/7m.png" alt="7"></p>
+                            <p class="box">
+                                <span><img src="images/m-icon_pasta.png" alt="PASTA"></span>
+                                <span>PASTA</span>
+                                <a href="#">자세히 보기</a>
+                            </p>
+                        </div>
+                    
+                    <div>
+                        <p><img src="images/8m.jpg" alt="8"></p>
+                        <p class="box">
+                            <a href="#">
+                                <span><img src="images/m-icon_steak.png" alt="STEAK"></span>
+                                <span>STEAK</span>
+                            </a>
+                            <a href="#">자세히 보기</a>
+                        </p>
+                    </div>
+                    </li>
+        </ul>
+        </div>
+</body>
+</html>
