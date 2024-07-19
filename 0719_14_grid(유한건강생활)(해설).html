@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+        *{margin: 0;padding: 0;}
+        .grid-contaniner{width: 1200px;height: 500px;margin: 50px auto;display: grid;background: #ccc;grid: auto-flow 100px 200px / 100px}
+
+        .grid-item{background: #ddd;border: 1px solid;}
+        .grid-item:first-child{grid-column: 3;}
+        #con{width: 1000px;margin: 0 auto;display: grid;
+            /* grid-template-columns: 492px ; */
+        }
+            /* grid-template-rows: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);} */
+        .top{width: 1000px;height: 90px;color: #181818;float: left;margin-bottom: 50px;justify-content: space-between;}
+        .top .left p{font-size: 26px;}
+        .top .left h2{font-size: 42px;}
+        .right{width: 180px;height: 48px; float: right;padding: 0 17px;border: 1px solid #181818;border-radius: 50px;text-align: center;}
+        .right p{font-size: 20px;font-weight: 600;line-height: 46px;}
+        /* .right p:after{} */
+        .imgbox{width: 1000px;height: 415px;}
+        #con .imgbox .img1 .img:first-child{width: 492px;height: 415px;}
+        #con .imgbox .img2 .img:nth-child(2){width: 238px;height: 200px;}
+        .img1{grid-row: 4;grid-column: 2;}
+        .img2{grid-row: 4;grid-column: ;}
+
+
+		/* .grid-container{width: 1200px;height: 500px;margin: 50px auto;display: grid;background: #ccc;
+            grid-template-columns: repeat(3,1fr);}
+        .grid-item{background: #ddd;border: 1px solid;}
+        .grid-item:first-child{justify-self: start;align-self: center;order: 1;}
+        .two{z-index: 1;}
+        .two,.three{grid-column: 1;grid-row: 1;} */
+	</style>
+</head>
+<body>
+	<div id="con">
+        <div class="top">
+            <div class="left">
+                <p>유한건강생활</p>
+                <h2>YOUTUBE</h2>
+            </div>
+            <div class="right">
+                <p>유튜브 바로가기</p>
+            </div>
+        </div>
+        <div class="imgbox">
+            <div class="img1"><img src="images/new_origin1.jpg" alt="img1"></div>
+            <div class="img2"><img src="images/new_origin2.jpg" alt="img2"></div>
+            <div class="img3"><img src="images/new_origin3.jpg" alt="img3"></div>
+            <div class="img4"><img src="images/new_origin4.jpg" alt="img4"></div>
+            <div class="img5"><img src="images/new_origin5.jpg" alt="img5"></div>
+        </div>
+    </div>
+</body>
+</html>
