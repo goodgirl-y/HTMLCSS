@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        ul{list-style: none;}
+        a{text-decoration: none;}
+        #wrap{width: 1033px;height: 676px;}
+        @font-face {
+            font-family: Ottogisans;
+            src: url(webfonts/오뚜기산스.otf);
+        }
+        li{width: 232px;height: 570px;border-radius: 20px;float: left;margin: 20px;display: flex;transition: 0.5s;}
+        #wrap ul li a{margin: 50px;tac}
+        #wrap ul li a p:first-child{font-size: 24px;}
+        #wrap ul li a p:nth-child(2){font-size: 40px;margin: 20px 0;}
+        #wrap ul li a p:nth-child(3) .box{font-size: 28px;}
+        .box p:nth-child(2){width: 100px;height: 30px;margin: 10px;}
+        #wrap ul li p a::after{}
+        p{color: #fff;font-weight: bold;}
+        .one{background: url(images/main_esg1.jpg);}
+        .two{background: url(images/main_esg2.jpg);}
+        .three{background: url(images/main_esg3.jpg);}
+        /* line-height: 38px; */
+
+        #wrap ul:hover li:not(:hover) .box{opacity: 0;content: "";position: absolute;width: 100%;height: 100%;background: rgba(0, 0, 0, 0.6);left: 0;top: 0;}
+        #wrap ul:hover li:hover{width: 40%;}
+        #wrap ul:hover li:hover .box{opacity: 1;top: 50%;transition: 0.5s 0.5s;}
+        #wrap ul:hover li:hover::after{content: "";position: absolute;width: 100%;height: 100%;left: 0;top: 0;}
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <ul>
+            <li class="one">
+                <a href="#">
+                    <p>Environmental</p>
+                    <p>환경</p>
+                    <p class="box">
+                        <p>자연과 함께 맛으로 행복한<br>세상을 만들기 위한 의미 있는<br>걸음을 내딛습니다.</p>
+                        <p><img src="images/btn_more_wh_pc.svg" alt=""></p>
+                    </p>
+                </a>
+            </li>
+            <li class="two">
+                <a href="#">
+                    <p>Social</p>
+                    <p>사회</p>
+                    <p class="box">
+                        <p>기업활동에 반하는 어떠한<br>행위도 허용하지 않으며,<br>깨끗하고 정직한 기업문화를<br>만들어갑니다.</p>
+                        <p><img src="images/btn_more_wh_pc.svg" alt=""></p>
+                    </p>
+                </a>
+            </li>
+            <li class="three">
+                <a href="#">
+                    <p>Governance</p>
+                    <p>지배구조</p>
+                    <p class="box">
+                        <p>모든 이해관계자의 권익을<br>증진하는 건전한 지배구조의<br>기업으로 도약하고자 합니다.</p>
+                        <p><img src="images/btn_more_wh_pc.svg" alt=""></p>
+                    </p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
