@@ -7,10 +7,10 @@
     <title>Document</title>
     <style>
         *{margin: 0;padding: 0;}
-        section{position: relative;}
+        section{position: relative;width: 450px;height: 500px;}
         section p{clip-path: url(#path1);position: absolute;left: 0;top: 0;width: 100%;height: 100%;}
+        section p img{object-fit: cover; width: 100%;height: 100%;}
         svg{position: absolute;left: 0;top: 0;width: 100%;height: 100%;}
-        
     </style>
 </head>
 <body>
@@ -18,8 +18,10 @@
         <p><img src="images/photo2.jpg" alt="photo2"></p>
     </section>
     <svg>
-       <clipPath id="path1" clipPathUnits="objectBoundinBox">
-        <polygon class="st0" points="0.75,0 0.25,0 0,0.5 0.25,1 0.75,1 1,0.5 "/>
+        <clipPath id="path1" clipPathUnits="objectBoundingBox">
+        <path fill="FFF200" path class="st0" d="M0.86,0.86l-0.3,0.11c-0.04,0.01-0.08,0.01-0.12,0l-0.3-0.11C0.07,0.84,0.02,0.77,0.02,0.69l0-0.37
+                c0-0.07,0.05-0.14,0.12-0.17l0.3-0.12c0.04-0.02,0.09-0.02,0.13,0l0.3,0.12c0.07,0.03,0.12,0.09,0.12,0.17l0,0.37
+                C0.98,0.77,0.93,0.84,0.86,0.86z"/></clipPath>
     </svg>
 </body>
 </html>
