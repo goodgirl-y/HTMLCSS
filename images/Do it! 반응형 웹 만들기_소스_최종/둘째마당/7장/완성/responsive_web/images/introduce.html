@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      ul{list-style: none;}
+      ul.introduce{width: 80%;max-width: 1080px;margin: 0 auto;display: flex;flex-wrap: wrap;gap: 50px;}
+      ul.introduce li{text-align: center;}
+      ul.introduce li p{word-break: keep-all;}
+      @media screen and (max-width:960px) {
+        ul.gallery{gap: 20px;}
+        ul.gallery li{flex-basis: 40%;}
+      }
+      @media screen and (max-width:768px) {
+        ul.gallery li{flex-basis: 80%;}
+      }
+
+    </style>
+  </head>
+  <body>
+    <ul class="gallery">
+        <li><img src="p_images/sub_gallery_01.jpg" alt="gallery_01" /></li>
+      </div>
+        <li><img src="p_images/sub_gallery_02.jpg" alt="gallery_02" /></li>
+      </div>
+        <li><img src="p_images/sub_gallery_03.jpg" alt="gallery_03" /></li>
+      </div>
+        <li><img src="p_images/sub_gallery_04.jpg" alt="gallery_04" /></li>
+      </div>
+        <li><img src="p_images/sub_gallery_05.jpg" alt="gallery_05" /></li>
+      </div>
+        <li><img src="p_images/sub_gallery_06.jpg" alt="gallery_06" /></li>
+      </div>
+    </ul>
+  </body>
+</html>
