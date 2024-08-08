@@ -1,0 +1,2638 @@
+function Fcm(args) {
+    this.error = (args.error);
+    this.arrTemp = new Array();
+
+    this.getError = function() {
+        return this.error;
+    };
+    this.App = {}; // App
+    this.Promotion = {
+        id:""
+    }; // 프로모션
+    
+}
+
+var Fcm = new Fcm({});
+
+Fcm.G_MAIN_PCWEB_URL = "fcm101.do?goTo=main";   // main url
+Fcm.G_MAIN_MOBILE_URL = "fcm101.do?goTo=main";   // main url
+Fcm.G_MAIN = "Mobile";
+Fcm.G_OPEN_POUP_USE_YN = false;
+
+Fcm.G_MEM_OPEN = true;   // 회원가입오픈여부
+Fcm.G_NON_ORD = true;    // 비회원주문오픈여부
+Fcm.G_HOT_KEYWORD_OPEN = true; // 인기검색어오픈여부
+Fcm.G_JQUERY_DIALOG = false;   // jquery dialog box 사용여부
+Fcm.App.VERSION = "1.1"; // 앱 버전
+Fcm.G_MOBILE_AUTH_ISPOP = false;   // 모바일 인증시 팝업으로 띄울지 여부
+Fcm.G_TESTER = ["1234567890","290000001289","290000003069","290000001904","290000001893","290000001653","290000052276","290000003438","290000014797","290000191582","290000001108"]; // 정식오픈 전 tester ccd
+//var HTTPS_USE_YN = "N"; // https 사용여부 -->SSL 적용 후 Y로 변경하면 (회원가입,주문서작성등이 HTTPS로 자동 연결된다)
+var HTTPS_USE_YN = "Y";
+/*
+if(document.domain.toString().indexOf("prod.xxxxxxx.com") > -1 && document.domain.toString().indexOf("prod_rsv.xxxxxxx.com") > -1) {
+	HTTPS_USE_YN = "Y";
+	document.domain="xxxxxxx.com";
+}
+//else if(document.domain.toString().indexOf("14.49.34.13") > -1 || document.domain.toString().indexOf("14.49.34.18") > -1)
+//{
+//	HTTPS_USE_YN = "Y";
+//	document.domain = document.domain;
+//}
+else if(document.domain.toString().indexOf("xxxxxxx.com") > -1) 
+	document.domain="xxxxxxx.com";
+else if(document.domain.toString().indexOf("iptime.org") > -1) 
+	document.domain="iptime.org";
+else
+	document.domain = document.domain;
+*/
+
+if (document.domain.toString().indexOf("shinsegaefood.com")  > -1 ||
+    document.domain.toString().indexOf("shinsegaefood.co.kr")  > -1 || 
+    document.domain.toString().indexOf("dev.shinsegaefood.com")  > -1 ) {
+   
+	HTTPS_USE_YN = "Y";
+	//HTTPS_USE_YN = "N";
+	//document.domain="xxxxxxx.com";
+}
+else if(document.domain.toString().indexOf("xxxxxxx.com") > -1) {
+	//document.domain="xxxxxxx.com";
+}
+//else if(document.domain.toString().indexOf("14.49.34.13") > -1 || document.domain.toString().indexOf("14.49.34.18") > -1)
+//{
+//	HTTPS_USE_YN = "Y";
+//	document.domain = document.domain;
+//}
+else if(document.domain.toString().indexOf("xxxxxxx.com") > -1) {
+	//document.domain="xxxxxxx.com";
+}
+else if(document.domain.toString().indexOf("iptime.org") > -1) {
+	document.domain="iptime.org";
+}
+else {
+	document.domain = document.domain;
+}
+document.domain = document.domain;
+
+var PHONE_GAP_OPEN_YN = "N"; // 폰캡 내장브라우져 OPEN 여부
+var PHONE_APP_OPEN_YN = "Y"; // 앱 내장브라우져 OPEN 여부
+var BR = "<br>"; // BR
+try{ 
+  BR = Page.mobile=="Y"?"\n":"<br>";
+}
+catch (e) {}
+
+try{ // index.html에는 gDomains가 없어 try
+
+  // 임시 모발일 때는 SSL 사용안한 - 서버세팅때문에
+  //if(Page.mobile=="Y") HTTPS_USE_YN="N";
+
+  gDomains = HTTPS_USE_YN=="Y"?gDomains:gDomain;    
+}
+catch (e) {}
+
+// 위치변경하지 마시오
+function nvl(val,ret) {
+    if(arguments.length == 1)
+        return (val == null ||val == 'null' || val == ""||val=='undefined'||val==undefined) ? "" : (typeof val)=="number"?String(val):val;
+    else
+        return (val == null ||val == 'null' || val == ""||val=='undefined'||val==undefined) ? ret : val;
+}
+
+//HashMap 위치변경하지 마시오
+HashMap = function(){
+this.map = new Object();
+};
+HashMap.prototype = {
+   put : function(key, value){
+       this.map[key] = value;
+   },
+   get : function(key){
+       return nvl(this.map[key]);
+   },
+   containsKey : function(key){
+    return key in this.map;
+   },
+   containsValue : function(value){
+    for(var prop in this.map){
+     if(this.map[prop] == value) return true;
+    }
+    return false;
+   },
+   isEmpty : function(key){
+    return (this.size() == 0);
+   },
+   clear : function(){
+    for(var prop in this.map){
+     delete this.map[prop]; 
+    }
+   },
+   remove : function(key){
+    delete this.map[key];
+   },
+   keys : function(){
+       var keys = new Array();
+       for(var prop in this.map){
+           keys.push(prop);
+       }
+       return keys;
+   },
+   values : function(){
+    var values = new Array();
+       for(var prop in this.map){
+        values.push(this.map[prop]);
+       }
+       return values;
+   },
+   size : function(){
+     var count = 0;
+     for (var prop in this.map) {
+       count++;
+     }
+     return count;
+   }
+};
+var POP_MAP  = new HashMap(); // 팝업 MAP
+
+XBrowers = {
+ name: "",
+ version: "",
+ // 브라우져 Body 높이를 구한다.
+ bodyHeight: function() {
+    var totalHeight = 0;
+    if( browser.msie ){ //IE
+        var scrollHeight = document.documentElement.scrollHeight;
+        var browserHeight = document.documentElement.clientHeight;
+        totalHeight = scrollHeight < browserHeight ? browserHeight : scrollHeight;
+    } else if ( browser.safari ){ //Chrome || Safari
+        var bodyHeight = document.body.clientHeight;
+        totalHeight = window.innerHeight < bodyHeight ? bodyHeight : window.innerHeight;
+        //totalHeight = document.body.clientHeight;
+    } else if ( browser.firefox ){ // Firefox || NS
+        var bodyHeight = document.body.clientHeight;
+            totalHeight = window.innerHeight < bodyHeight ? bodyHeight : window.innerHeight;
+            totalHeight = totalHeight -22;
+
+    } else if ( browser.opera ){ // Opera
+        var bodyHeight = document.body.clientHeight;
+        totalHeight = window.innerHeight < bodyHeight ? bodyHeight : window.innerHeight;
+    }
+    else {
+        alert("We do not have a browser.");
+    }
+
+    return totalHeight;
+ },
+type: function() {
+     var _ua = navigator.userAgent;
+     
+    /* IE7,8,9,10,11 */
+
+    if (((navigator.appName == 'Microsoft Internet Explorer') || ((navigator.appName == 'Netscape') && (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)))) {
+        var rv = -1;
+        var trident = _ua.match(/Trident\/(\d.\d)/i);
+         
+        //ie11에서는 MSIE토큰이 제거되고 rv:11 토큰으로 수정됨 (Trident표기는 유지)
+        if(trident != null && trident[1]  == "7.0") return rv = "IE" + 11;
+        if(trident != null && trident[1]  == "6.0") return rv = "IE" + 10;
+        if(trident != null && trident[1]  == "5.0") return rv = "IE" + 9;
+        if(trident != null && trident[1]  == "4.0") return rv = "IE" + 8;
+        if(trident == null) return rv = "IE" + 7;
+         
+        var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+        if (re.exec(_ua) != null) rv = parseFloat(RegExp.$1)
+        return rv;
+    } else {
+         
+        /* etc */
+        var agt = _ua.toLowerCase();
+        if (agt.indexOf("chrome") != -1 || agt.indexOf("Chrome") != -1) return 'Chrome';
+        if (agt.indexOf("opera") != -1) return 'Opera'; 
+        if (agt.indexOf("staroffice") != -1) return 'Star Office'; 
+        if (agt.indexOf("webtv") != -1) return 'WebTV'; 
+        if (agt.indexOf("beonex") != -1) return 'Beonex'; 
+        if (agt.indexOf("chimera") != -1) return 'Chimera'; 
+        if (agt.indexOf("netpositive") != -1) return 'NetPositive'; 
+        if (agt.indexOf("phoenix") != -1) return 'Phoenix'; 
+        if (agt.indexOf("firefox") != -1) return 'Firefox'; 
+        if (agt.indexOf("safari") != -1) return 'Safari'; 
+        if (agt.indexOf("skipstone") != -1) return 'SkipStone'; 
+        if (agt.indexOf("netscape") != -1) return 'Netscape'; 
+        if (agt.indexOf("mozilla/5.0") != -1) return 'Mozilla';
+        }
+
+    }
+
+};
+
+
+/**
+* 작 성 자 : SSS
+* 작 성 일 : 2014-01-10
+* 개    요 : DOM LOAD 시
+* return값 : void
+*/
+$(document).ready(function(){
+
+
+
+     // div 팝업 닫기
+    $('.close').click(function(event){ // popup close
+        var id1 = $(this).parent().parent().attr('id');
+        $("#"+id1).hide(); // If div_type is layer popup then hide!!
+
+        try{
+            var _parent = parent.LayerPopup.status;
+
+            if (_parent==1) { // 레이어팝업으로 호출할경우만 닫힘
+                LayerPopup.DisableLayerPopup();
+                return false;
+            }
+        }  catch(e) {}
+    }); 
+    
+    // START.Event Handdler
+    $.fn.checkOnEvt = function(id){};
+    $(":checkbox").on('change', function(){
+        $.fn.checkOnEvt($(this).attr("id"));
+    });
+    
+    $.fn.selectOnEvt = function(selectId){};
+    $('select').on('change', function() {
+        $.fn.selectOnEvt($(this).attr("id"));
+    });
+    // END.Event Handdler
+
+    // input focus - 팝업일 경우만 포커스 처음 가게
+    if(Fcm.isPopup()=="Y") {
+        $("input[type=text]:not(.datepicker):not(.login)").first().focus();
+    }
+
+    // START.PLACEHOLDER
+    var SUPPORT_PLACEHOLDER = false; // placeholder support brower
+    try    {
+        test = document.createElement('input');
+        if('placeholder' in test)  {
+            SUPPORT_PLACEHOLDER = true;
+        }
+      
+        if(!SUPPORT_PLACEHOLDER) { 
+            $('input, textarea').placeholder();
+        }
+    }
+    catch (e){}
+    $(".placeholder").css({ 'color': '#333333' });
+    $(".focus_placeholder").css({ 'color': '#333333' });
+    // END.PLACEHOLDER
+
+    try{
+		$(".datepicker").attr("readonly","readonly").datepicker();		
+    }
+    catch (e){}
+
+
+});
+
+
+// 해당 페이지의 모든 외부 리소스, 이미지등이 로드 된 후 처리 됨.
+$(window).load(function(){
+	try {
+		doInit();
+    }
+    catch(e) {}
+});
+
+/*
+ * 아이디 유효성 체크
+ * */
+Fcm.memIdValid = function(id) {
+	var reg1 = /^[a-z0-9]{6,20}$/;
+	//var reg2 = /[a-z]/g;    
+	//var reg3 = /[0-9]/g;
+	var val = $("#"+id).val();
+	
+	if ( !(reg1.test(val)) ) {
+		jAlert('아이디는 6자~20자 이내 영문과 숫자를 사용 하실 수 있습니다.', '안내', function(){
+			$("#"+id).focus();
+		});
+		return false;
+	}
+	return true;
+	
+};
+
+
+/*
+ * 패스워드 유효성 체크
+ * */
+Fcm.pwdValid = function(val, id) {
+	var pw = $("#" + id).val();
+	var validYn = 'Y';
+	var mobile = Page.mobile;
+	var num = pw.search(/[0-9]/g);
+	var eng = pw.search(/[a-z]/ig);
+	var spe = pw.search(/[`_~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+	if (pw.length < 8 || pw.length > 12) {
+		validYn = 'N';
+	} else if (pw.search(/₩s/) > -1) {
+		validYn = 'N';
+	} else if (num < 0 || eng < 0 || spe < 0) {
+		validYn = 'N';
+	}
+	if (validYn == 'N') {
+		alert('비밀번호는 8자~12자 이내 영문/숫자/특수기호를 조합하여 사용할 수 있습니다.');
+		return false;
+	}
+	if (/(\w)\1\1\1/.test(pw) || Fcm.pwdContinuedValue(pw)) {
+		alert('비밀번호에 3자 이상의 연속 또는 반복 문자 및 숫자를 사용하실 수 없습니다.');
+        return false;
+    }
+	
+	return true;
+};
+
+Fcm.pwdContinuedValue = function(value) {
+    var intCnt1 = 0;
+    var intCnt2 = 0;
+    var temp0 = "";
+    var temp1 = "";
+    var temp2 = "";
+
+    for (var i = 0; i < value.length-2; i++) {
+        temp0 = value.charAt(i);
+        temp1 = value.charAt(i + 1);
+        temp2 = value.charAt(i + 2);
+        if (temp0.charCodeAt(0) - temp1.charCodeAt(0) == 1
+                && temp1.charCodeAt(0) - temp2.charCodeAt(0) == 1) {
+            intCnt1 = intCnt1 + 1;
+        }
+
+        if (temp0.charCodeAt(0) - temp1.charCodeAt(0) == -1
+                && temp1.charCodeAt(0) - temp2.charCodeAt(0) == -1) {
+            intCnt2 = intCnt2 + 1;
+        }
+    }
+    return (intCnt1 > 0 || intCnt2 > 0);
+}
+
+/*
+ * 휴대폰 유효성 체크
+ * */
+Fcm.cellPhoneValid = function(id) {
+	var regex = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
+	var val = $("#"+id).val();
+	if (!regex.test(val))
+	{
+		showMessage(Msg.get("FCM","USER-1003"), Dic.get("CEL_PHONE")); // #[휴대폰] 의 입력형식이 올바르지 않습니다.
+		return false;
+	}
+	return true;
+};
+
+/*
+ * 이메일 유효성 체크
+ * */
+Fcm.emailValid = function(id) {
+	var regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+	var val = $("#"+id).val();
+	if ( !regex.test(val)) {
+		jAlert('이메일 입력형식이 올바르지 않습니다.', '안내', function(){});
+		return false;
+	}
+	return true;
+};
+
+
+
+
+/**
+ * 작 성 자 : LSK 
+ * 작 성 일 : 2014.1.20 
+ * 개 요 : 날짜 change selectBox set return
+ * 값 : void
+ */
+Fcm.changeDateFn = function(args){
+    var year  = nvl(args.y);
+    var month = nvl(args.m);
+    var dayEl = nvl(args.d);
+    var selected = nvl(args.selected,"Y");
+
+    var blank_nm = nvl(args.blank_nm, "선택"); // 선택
+
+    year  = $("#"+year).val();
+    month = $("#"+month).val();
+
+    
+
+    var dayHtml = '';
+    var endDay = 0;
+    if(month == 2){
+        // 2월 윤년 계산
+        var leap = (((year%4 == 0) && (year%100 != 0)) || (year%400 == 0));
+        if(leap){
+            endDay = 30;
+        }else{
+            endDay = 29;
+        }
+    }else if(month == 4 || month == 6 || month == 9 || month == 11){
+        endDay = 31;
+    }else{
+        endDay = 32;
+    }
+    
+    if(selected=="Y") {
+        dayHtml += '<option value="">'+blank_nm+'</option>';
+    }
+    
+    var temp = "";
+	for(var i=1;i<endDay;i++){
+		temp = i;
+		if(temp<10) temp = ""+"0"+i;
+		
+		dayHtml += '<option value="'+temp+'">'+temp+'</option>';
+	}
+
+    $("#"+dayEl).html(dayHtml);
+    // $.fn.selectReset(dayEl);
+};
+
+//윈도우 name 가져오기
+Fcm.getWindowName = function(flag) {
+    var wn = "";
+    try{
+       wn =  nvl(Page.windowName,OpenPopup.windowName);        
+    }
+    catch (e) {wn = "";}
+
+    return wn;
+};
+
+/*
+로그인이 필요     PAGE => onclick="Fcm.goMenu({url:'/fpmt101.do?goTo=couponPmt',login_chk:'Y'});return false;"
+로그인이 필요없는 PAGE => onclick="Fcm.goMenu({url:'/fpmt101.do?goTo=couponPmt'});return false;"
+*/
+Fcm.goMenu = function(args) { // 호출 URL, 로그인(Y:로그인 체크)
+	args = nvl(args,{});
+
+    var url          = nvl(args.url, Page.URL);
+    var login_chk = nvl(args.login_chk, "N");
+    
+    if (Fcm.isPopup() =="Y") { // 팝업이면 윈도우명을 추가적으로 넘긴다.
+      url = url+"&windowName="+Fcm.getWindowName();
+    }
+
+
+    // START.SSL
+    // popLogin         : 로그인
+    // searchIdMobile : MOBILE.아이디찾기
+    // searchPwMobile : MOBILE.비밀번호찾기
+    if(url.indexOf("goTo=memGubun") > -1 ||
+       url.indexOf("goTo=popLogin") > -1 ||
+       url.indexOf("goTo=searchIdMobile") > -1 ||
+       url.indexOf("goTo=searchPwMobile") > -1 ||
+       url.indexOf("goTo=modifyMyInfo") > -1 ||
+       url.indexOf("goTo=modifyPassword") > -1 ||
+       url.indexOf("goTo=easyLogin") > -1 ||
+       url.indexOf("fcomEvent.do") > -1  ||
+       url.indexOf("goTo=withdrawConfirmPW") > -1
+     ) {
+        
+        gDomains = gDomainsURl();        
+
+        url = gDomains + url;
+
+
+        try {
+             //console.log("url :"+url);
+        } catch (e) {
+            // TODO: handle exception
+        }
+
+
+    } else {
+        if (url.indexOf("http://") < 0) {
+            url = gDomain + url;
+        }
+    }
+
+
+  // END.SSL
+  
+  // Login Check 필요시
+  if(login_chk=="Y") { // 
+      if(Fcm.isLoginYn()=="N") { // 로그인이 필요한데 로그아웃상태이면
+    		  popLogin({returnUrl:url}); // 로그인 팝업 호출
+      } else {
+        document.location.href = url;
+      }
+  } else {
+      document.location.href = url;
+  }
+
+
+  return false;
+};
+
+
+
+/**
+* 작 성 자 : SSS
+* 작 성 일 : 2014-02-04
+* 개    요 : 로그인
+* return값 : 로그인 처리 후 callback -- https 로 로그인 후 부모창을 참조하기위해 http 페이지로 이동한다.
+*/
+Fcm.popupRedirect = function(args) {
+	args = nvl(args,{});
+	var callFrom = nvl(args.callFrom);
+	var returnUrl = nvl(args.returnUrl);
+	returnUrl = decodeURI(decodeURIComponent(returnUrl));
+	var callBackFuc = nvl(args.callBackFuc);
+	var flag = nvl(args.flag);
+	var callPageUrl = nvl(args.callPageUrl);
+	var callPageProtocol = '';
+	
+    if(callPageUrl != '' && callPageUrl.indexOf('://')>-1) {
+        callPageProtocol = callPageUrl.split('://')[0];
+    }
+
+	var domain;
+	if (callPageProtocol == 'https') {
+		domain = gDomains;
+	} else {
+		domain = gDomain;
+	}
+
+	if (callBackFuc == 'Fcm.goPwExpire') {
+		Fcm.goPwExpire();
+		return false;
+	}
+    if (nvl(returnUrl).length > 5) {
+        location.href=returnUrl;
+    } else {
+        Fcm.gotoMain(flag);
+    }
+};
+
+/**
+ * 작 성 자 : SSS
+ * 작 성 일 : 2014-01-14
+ * 개    요 : 로그인상태에서 볼수 없는 페이지이면 메인으로 이동 시킨다.
+ *
+ * return값 : args
+*/
+Fcm.notPermissionPage = function(args) {
+   args = nvl(args,{});
+
+   if (Fcm.isLoginYn()=="Y") { // 로그인이 되었다면 로그아웃하라는 메세지
+      // START
+      if (Fcm.isPopup() =="Y") { // 팝업이면 윈도우명을 추가적으로 넘긴다.
+           if (nvl(parent.opener)!="") { // opener 팝업으로 열릴때만 강제 담힘.
+               Fcm.selfClose();
+           } else {
+
+           }
+       } else {
+           Fcm.gotoMain();
+       }
+       return true;
+   } 
+   return false;
+};
+
+Fcm.httpRedirect = function(args) {
+    args = nvl(args,{});
+    var q = nvl(args.q);
+
+    var protocol = HTTPS_USE_YN=="Y"?"https://":"http://";
+    var uu = Page.URL.split('//');
+    
+    if(HTTPS_USE_YN=="Y" && uu[0].indexOf("https") > -1) { // https 면 skip
+        return;
+    }
+
+    if(HTTPS_USE_YN=="N") { // http 면 skip
+        return;
+    }
+
+    httpsURL = protocol + uu[1]; // https://www.abc.com   
+
+    var params = "";
+    var gen =  Fcm.getLanguage(); // os 조회
+
+    if(q.length > 0 ) {
+        //if(params.indexOf("&") > - 1) params += q;
+        //else params += "&"+q;
+    }
+
+    httpsURL = httpsURL+params;  //PC 용 인덱스 파일을 띄어라
+
+	window.location = httpsURL; 
+};
+
+// 저장된 쿠키값을 가져 옴  
+Fcm.getCookie = function(name) {
+
+    var nameOfCookie = name + "="; 
+    var x = 0; 
+    while ( x <= document.cookie.length ) 
+        { 
+            var y = (x+nameOfCookie.length); 
+            if ( document.cookie.substring( x, y ) == nameOfCookie ) { 
+            if ( (endOfCookie=document.cookie.indexOf( ";", y )) == -1 ) 
+                    endOfCookie = document.cookie.length; 
+            return unescape( nvl(document.cookie.substring( y, endOfCookie )) ); 
+            }
+        x = document.cookie.indexOf( " ", x ) + 1; 
+        if ( x == 0 ) 
+        break; 
+    } 
+    return ""; 
+};
+
+// 쿠키
+Fcm.setCookie = function(args) {
+    args = nvl(args,{});
+
+    var cookieName  = nvl(args.cookieName, "");                // 쿠키명
+    var exdays      = nvl(args.exdays,"1");                // 기간-1년:365
+    var chk         = nvl(args.chk,"justOneOpen");         // checkbox id
+    var val         = nvl(args.val,"");
+    // 안보기 적용
+    if(cookieName.length > 0 ) {
+        Fcm.setCookieHandler({c_name:cookieName,val:val,exdays:exdays}); 
+
+        if(cookieName=="autoLogin") { // 자동로그인
+            if($('input[name="'+chk+'"]').is(":checked")==true) {
+                Fcm.setCookieHandler({c_name:cookieName,val:val,exdays:exdays}); 
+            } else {            
+                Fcm.deleteCookie({c_name:cookieName});
+            }
+        }
+    }
+};
+
+// 쿠키 설정
+Fcm.setCookieHandler = function(args) {
+    var c_name = nvl(args.c_name);
+    var val    = nvl(args.val);
+    var exdays1 = nvl(args.exdays);
+
+    var exdate = new Date();
+
+    exdate.setDate( exdate.getDate() + Number(exdays1) );
+
+
+    var c_value = escape(val) + ( ( exdays1 == null ) ? "" : "; expires=" + exdate.toUTCString() );
+
+    if(exdays1=="0") { // 0이면 브라우져 닫을때 소멸됨
+        c_value = val;
+    } 
+ 
+    document.cookie = c_name + "=" + c_value +"; path=/ ";
+}
+
+// 쿠키 삭제
+Fcm.deleteCookie = function(args) {
+    var c_name = nvl(args.c_name);
+
+    if(c_name=="") return;
+
+    Fcm.setCookieHandler({c_name:c_name,val:'',exdays:'-1'});
+}
+
+/**
+ * 패스워드 만료 호출
+ */
+Fcm.goPwExpire = function(args) {
+	var args = nvl(args,{});
+	var returnUrl = nvl(args.returnUrl, '/main.sf');
+	location.href = "/fcm000.sf?goTo=pwdChangeInfo&returnUrl=" + encodeURIComponent( returnUrl ) + "";	
+};
+
+// 부모님조회
+Fcm.getParent = function(args) {
+    args = nvl(args,{});
+    
+    var call_from_popup = nvl(args.call_from_popup);
+    var p = null;
+    if (call_from_popup.length > 0 ) { // 팝업에서 팝업을 호출하면 해당 프레임이 부모임
+        parent.$("iframe").each(function(iel, el) { 
+            var id= nvl($(this).attr('id'));
+            var doc = window.parent.frames[id];
+            if(doc.Page.windowName == call_from_popup) {
+                p =  window.parent.frames[id];
+
+                return false; // break;
+            }
+        });
+    } 
+    
+    else {
+        // if(parent.window.opener != null && !parent.window.opener.closed) { //
+		// window.open
+        if(window.opener != null && !window.opener.closed) { // window.open
+            p =  window.opener;
+        } else { // iframe
+            p =  window.parent;
+        }
+    }
+
+    return p;
+};
+
+/**
+* 작 성 자 : SSS
+* 작 성 일 : 2014-02-04
+* 개    요  : 창묻지않고 닫기
+*
+* return값 : void
+*/
+Fcm.selfClose = function(args) {
+	args = nvl(args,{});
+
+  
+
+    try
+    {
+    	top.window.opener = top;
+        top.window.open('','_parent', '');
+        top.window.close();
+
+
+
+        if (/MSIE/.test(navigator.userAgent))
+        {
+        	if(navigator.appVersion.indexOf("MSIE 7.0")>=0)
+        	{
+        		// IE7에서의 처리
+        		window.open('abort:blank','_self').close();
+            }
+        	else
+        	{
+                window.opener = self;
+                self.close();
+            }
+        }
+    }
+    catch (exception) {
+
+
+
+        if(navigator.appVersion.indexOf("MSIE 7.0")>=0){
+            //IE7에서의 처리
+            window.open('abort:blank','_self').close();
+        }
+        else{
+        	window.opener = self;
+        	self.close();
+        }
+    }
+
+};
+
+/**
+ * 작 성 자 : SSS
+ * 작 성 일 : 2014-01-14
+ * 개    요 : 메인화면으로 이동
+ *
+ * return값 : args
+*/
+Fcm.gotoMain = function(flag) {
+	var flag = nvl(flag,'');
+	var url = gDomain+"/main.sf";
+    location.href = url; 
+};
+
+// 팝업
+Fcm.isPopup = function(flag)
+{
+	var isPopup = "N";
+	try
+	{
+		if(nvl(OpenPopup)!="") isPopup = "Y";
+    }
+    catch (e)
+    {
+    	isPopup = "N";
+    }    
+    
+    return isPopup;
+};
+
+//os 언어 알아내기
+Fcm.OSName = function() {
+    var OSName = "Unknown OS";
+    if (navigator.appVersion.indexOf("Win") != -1)        OSName = "WINDOWS";
+    else if (navigator.appVersion.indexOf("Mac") != -1)   OSName = "MACOS";
+    else if (navigator.appVersion.indexOf("X11") != -1)   OSName = "UNIX";
+    else if (navigator.appVersion.indexOf("Linux") != -1) OSName = "LINUX";
+ 
+//    console.log('Your OS is: ' + OSName);
+
+    return OSName;
+}
+
+
+//os 언어 알아내기
+Fcm.getLanguage = function()
+{
+	languagesq = new Object; 
+	languagesq["un"] = "etc";//알려지지 않은 언어 
+	languagesq["cn"] = "cn";//중국 (simp.) 어 
+	languagesq["cs"] = "cs";//Czech language 
+	languagesq["da"] = "da";//Danish language 
+	languagesq["de"] = "de";//German language 
+	languagesq["el"] = "el";//Greek language 
+	languagesq["en"] = "en";//영어 
+	languagesq["es"] = "es";//스페인 
+	languagesq["fc"] = "fc";//프랑스 (Canada) 
+	languagesq["fi"] = "fi";//프랑스 
+	languagesq["fr"] = "fr";//프랑스 
+	languagesq["hu"] = "hu";//헝가리 
+	languagesq["it"] = "it";//이테리 
+	languagesq["ja"] = "jp";//일본어 
+	languagesq[LocaleUtil.KO] = "kr";//한국어 
+	languagesq["nl"] = "nl";//Dutch language 
+	languagesq["no"] = "no";//Norwegian language 
+	languagesq["pl"] = "pl";//Polish language 
+	languagesq["pt"] = "pt";//Brazilian Portuguese language 
+	languagesq["ru"] = "ru";//Russian language 
+	languagesq["sv"] = "sv";//Swedish language 
+	languagesq["tr"] = "tr";//Turkish language 
+	languagesq["tw"] = "tw";//Chinese (trad.) language 
+	languagesq["uk"] = "uk";//영어 (UK) 
+	languagesq["de-de"] = "dede";//German language 
+	languagesq["en-gb"] = "engb";//영어 (UK) 
+	languagesq["en-us"] = "enus";//영어 
+	languagesq["es-es"] = "enes";//Spanish language 
+	languagesq["fr-fr"] = "frfr";//French language 
+	languagesq["ja-jp"] = "jp";//일본어 
+
+	lang = "un"; 
+	Component = "Unknown browser"; 
+	platform = "Unknown platform"; 
+	OS = "";// 
+	
+	version = parseFloat(navigator.appVersion); 
+	UA = navigator.userAgent; 
+	ua = navigator.userAgent.toLowerCase(); 
+	
+	if(((start = ua.indexOf("[")) > 0) && ((end = ua.indexOf("]")) == (ua.indexOf("[") + 3))) language = ua.substring(start+1, end); 
+	else if(navigator.language) language = navigator.language.toLowerCase(); 
+	else if(navigator.userLanguage) language = navigator.userLanguage.toLowerCase(); 
+	
+	if(language.indexOf("kr") > -1 || language.indexOf(LocaleUtil.KO) > -1) language =LocaleUtil.KO; 
+	if(languagesq[language])  lang = language; 
+	var gen = nvl(languagesq[lang],LocaleUtil.KO); 
+	
+	return gen;
+};
+
+/**
+* 작 성 자 : SSS
+* 작 성 일 : 2014-02-04
+* 개    요  : 로그인여부
+*
+* return값 : true/false
+
+        if(Fcm.isLoginYn()=="Y") { // 로그인이 되었다면 로그아웃하라는 메세지
+            alert("로그아웃 후 사용이 가능합니다.");
+            return;
+        }
+
+*/
+Fcm.isLoginYn = function() {
+
+	var isLogin = "N";
+	var goTo    = "isLoginYn";
+	var params  = "&dummy1=";   //
+		params += "&ignore=Y";
+		params += "&memId="+encodeURI(encodeURIComponent(Fcm.getCookie('autoLogin')));
+    ajaxRequest({url:"/fcm000.sf?goTo="+goTo+params}, {}, function(data)
+    {
+    	if (data.error != true) {
+            isLogin = data.dataset[0].isLoginYn; // 로그인여부
+        }
+    });
+    
+    return isLogin;
+};
+
+/**
+ * 메인페이지 링크 호출
+ * ex> 메인브랜드 사은품 등에서 사용
+ * @param args
+ */
+Fcm.popMainLink = function(args) {
+	var args = nvl(args,{});
+//	10.프로모션
+//	20.이벤트
+//	30.브랜드
+//	40.상품
+//	99.기타
+	    
+    var gb = nvl(args.gb);
+    var cd = nvl(args.cd);
+    var popup = nvl(args.popup);
+	var url = nvl(args.url);
+	
+    var mobile  = Page.mobile; // mobile
+       
+    
+    if(gb == "40")
+    {
+    	Fcm.goGift({'event_cd' : cd , 'mobile' : mobile });
+    }
+    else if(gb == "10")
+    {
+    	Fcm.goPmt({'newOpen' : popup , 'mobile' : mobile, 'evtCd' : cd });
+    }
+    else if(gb == "20")
+    {
+    	Fcm.goEvent({'newOpen' : popup , 'mobile' : mobile, 'event_cd' : cd });
+    }
+    else if(gb == "30")
+    {
+    	Fcm.goBrand({'newOpen' : popup , 'mobile' : mobile, 'brandcd' : cd });
+    }
+    else if(gb == "99")
+    {
+    	if(popup == 'N')
+			document.location.href = url;
+		else
+			win = window.open(url,"xxxxxxx","scrollbars=yes,location=yes,status=yes,toolbar=yes");
+    }
+
+};
+
+
+//URL 복사
+Fcm.copy_trackback = function(trb, msg) {
+    var a = navigator.userAgent.toLowerCase();
+
+    if((a.indexOf("msie") > -1) || (a.indexOf(".net") > -1)){
+        if(window.clipboardData) clipboardData.clearData();
+            window.clipboardData.setData("TEXT", trb);
+            
+            showMessage(Msg.get("FCM","USER-1250")); // 주소가 복사되었습니다. 원하는 곳에 붙여넣기(Ctrl+V)해주세요.
+    } else {
+        temp = prompt(msg, trb); // 이 상품의 주소입니다. Ctrl+C를 눌러 클립보드로 복사하세요
+        
+    }
+};
+
+//URL 복사
+Fcm.copy_trackback2 = function(trb, msg) {
+    var a = navigator.userAgent.toLowerCase();
+
+    if((a.indexOf("msie") > -1) || (a.indexOf(".net") > -1)){
+        if(window.clipboardData) clipboardData.clearData();
+            window.clipboardData.setData("TEXT", trb);
+            
+            jAlert('이벤트의 주소입니다. Ctrl+V를 눌러 클립보드로 붙여넣으세요.', '안내', function(){});
+
+    } else {
+        temp = prompt(msg, trb); // 이 상품의 주소입니다. Ctrl+C를 눌러 클립보드로 복사하세요
+        
+    }
+};
+
+Fcm.goSms = function(SYSTEM_URL, myTitle, name, image111){
+	var msg = myTitle + "["+ name +"]" + SYSTEM_URL;
+	var encMsg = encodeURIComponent(msg);
+	
+	var ua = navigator.userAgent.toLowerCase();
+	
+	if (ua.indexOf("iphone") > -1 || ua.indexOf("ipad") > -1){
+		window.location.href = 'sms:;body=' + encMsg;
+	}else{
+		window.location.href = 'sms:?body=' + encMsg;
+	}
+	
+};
+
+//싸이렌 휴대폰 인증창
+function openPCCWindow(){
+//	window.name = "Parent_window";
+	
+	var pccUrl = "https://pcc.siren24.com/pcc_V3/jsp/pcc_V3_j10.jsp";
+    
+    if(1==2) { //  get방식 - post 방식 시 문제가 되는 pc 가 많아 변경 20160128
+    	var params = "?dataType=html";
+             params += "&" + $("#reqPCCForm").serialize();
+	    var url = pccUrl + params;
+    	var PCC_window = window.open(url, 'PCCV3Window', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no' );
+    }
+    else {
+        var PCC_window = window.open('', 'PCCV3Window', 'width=500, height=550, resizable=1, scrollbars=no, status=0, titlebar=0, toolbar=0, left=0, top=0' );
+    	
+    	if(PCC_window == null) {
+        	if (Page.mobile != "Y") {
+        		alert("※ 윈도우 XP SP2 또는 인터넷 익스플로러 7 사용자일 경우에는\n화면 상단에 있는 팝업 차단 알림줄을 클릭하여 팝업을 허용해 주시기 바랍니다. \n\n※ MSN,야후,구글 팝업 차단 툴바가 설치된 경우 팝업허용을 해주시기 바랍니다.");
+        	} else {
+        		jAlert('현재 네트워크 접속이 원활하지 않아 팝업이 차단되었습니다.\n화면 하단에 있는 팝업 차단 알림줄에서 팝업을 허용해주시기 바랍니다.', '안내', function(){});
+        	}
+        }    	
+    	
+	    document.reqPCCForm.action = pccUrl;
+	    document.reqPCCForm.target = 'PCCV3Window';
+	    
+//	    setTimeout(function(){
+		    document.reqPCCForm.submit();
+//	    }, 1000);
+	    
+    }
+   
+   return true;
+}
+
+//싸이렌 아이핀 인증창
+function openCBAWindow(){
+//	window.name = "Parent_window";
+//    var CBA_window = window.open('', 'IPINWindow', 'width=450, height=500, resizable=0, scrollbars=no, status=0, titlebar=0, toolbar=0, left=300, top=200' );
+    var CBA_window = window.open('', 'IPINWindow', 'width=450, height=500, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no' );
+//    var CBA_window = openPopup(arg = {url    : '',
+//            params : { onePopupYn : "Y" },
+//		      title  : "인증",
+//		      name   : "IPINWindow",
+//		      option : "dialogWidth:500px;dialogHeight:500px;scroll:yes;resizable:1"
+//		     });
+    if (CBA_window == null) {
+    	alert(" ※ 윈도우 XP SP2 또는 인터넷 익스플로러 7 사용자일 경우에는 \n    화면 상단에 있는 팝업 차단 알림줄을 클릭하여 팝업을 허용해 주시기 바랍니다. \n\n※ MSN,야후,구글 팝업 차단 툴바가 설치된 경우 팝업허용을 해주시기 바랍니다.");
+    }
+	document.reqCBAForm.action = 'https://ipin.siren24.com/i-PIN/jsp/ipin_j10.jsp';
+    document.reqCBAForm.target = 'IPINWindow';
+    document.reqCBAForm.submit();
+    return true;
+}
+
+// set SSL
+function gDomainsURl(args) {
+	args = nvl(args,{});
+    
+    if(!Fcm.isMobile()) {
+        // cn,us 인증서 없음
+        /*
+        if(gDomains.indexOf("cn.xxxxxxx.com") > -1 ||
+           gDomains.indexOf("us.xxxxxxx.com") > -1 ||
+           gDomains.indexOf("jp.xxxxxxx.com") > -1 
+          ) {
+            gDomains = "https://www.xxxxxxx.com"; 
+        } 
+        */
+    }
+
+    return gDomains;
+}
+
+// 로그인화면 호출
+function popLogin(args) {
+	args = nvl(args,{});
+
+	var returnUrl 	= nvl(args.returnUrl);    // returnUrl
+	var callFrom  	= nvl(args.callFrom);     // 호출하는 곳
+	var callBackFuc = nvl(args.callBackFuc);  // 콜백
+
+    gDomains = gDomainsURl();
+
+	if (returnUrl=="") returnUrl = Page.URL;
+	if (returnUrl.indexOf("goTo=mem") > -1 || returnUrl.indexOf("goTo=popSiren") > -1) {
+			returnUrl = gDomain+"/main.sf";
+	}
+
+    var goTo    = "popLogin";
+    var params  = "&callFrom="+callFrom;
+        params += "&callBackFuc="+callBackFuc;
+        params += "&callPageUrl="+Page.URL;
+
+        if (Page.goTo=="searchResult") {
+            params += "&returnUrl="+ encodeURIComponent( returnUrl ) ;
+        } else {
+            params += "&returnUrl="+ encodeURIComponent( returnUrl ) ;
+        }
+
+	// 세션여부를 체크한다.
+	if(Fcm.notPermissionPage()) return;
+
+		
+	if (Fcm.G_OPEN_POUP_USE_YN) { // 팝업을 사용하면
+		if (callFrom == "SSL_LOGIN_POP") { // 부모가 HTTP고 창이 HTTPS면 페이지를 이동하여 부모를 참조한다.
+			Fcm.popupRedirect(args);
+			return false;
+		} else {
+			var url = "/fcm000.sf?goTo="+goTo+params;
+			var list = openPopup(arg = {url    : gDomains+url
+									   ,params : args
+									   ,title  : "LOGIN"
+									   ,onePopupYn : "Y"
+									   ,method : "get"
+									   ,option : "dialogWidth:600px;dialogHeight:470px;scrollbars:no;resizable:1"
+									   });
+		}   
+	}
+	else {
+		document.location.href = gDomains + "/fcm000.sf?goTo="+goTo+params; // 로그인 페이지로 이동한다.
+	}
+}
+
+
+
+
+// frameName 에 해당하는 프레임이 존재하는지 check
+function checkExistsFrameByName(frameName, win)
+{
+	win = win || window.top;
+	try
+	{
+		for ( var n = 0, nlen = win.frames.length; n < nlen; n++ )
+		{
+			if ( win.frames[n].name == frameName ) return true;
+			if ( checkExistsFrameByName(frameName, win.frames[n]) ) return true;
+		}
+	}
+	catch (e)
+	{
+	}
+	return false;
+}
+
+/**
+* 작 성 자 : 성상수
+* 작 성 일 : 2013. 07. 10
+* 개    요 : 팝업공통파라미터 처리
+* 사용방법 :
+* return값 :
+*/
+function f_setPopupArg(args) {
+    var args = nvl(args,"");
+
+    args.fuction    = getScriptFuncName(arguments.callee.caller.toString()); // 호출된 Fuction명
+    args.title      = nvl(args.title,"");  // 제목
+    args.popupYn    = nvl(args.popupYn,"N").toUpperCase();     // 조회 결과가 1건이라도 무조건 팝업으로 뛰울 지 여부
+    args.url        = nvl(args.url,"");     // url
+    args.option     = nvl(args.option,"");      // option
+    args.onePopupYn = nvl(args.onePopupYn,"N");      // 팝업을 한개만 허용할 지 여부 --여러개 열수 있음
+}
+
+function getScriptFuncName(ret) {
+    ret = ret.substr('function '.length);
+    ret = ret.substr(0, ret.indexOf('('));
+
+    return ret;
+}
+
+
+/**
+ * 작 성 자 : bsk
+ * 작 성 일 : 2015-05-25
+ * 개 요 : 날짜를 DatePicker 타입으로 반환한다.
+ * 
+ * return값 : args
+ */
+function getMaskDate(yearId, monthId, dayId)
+{
+	var year  = $("#"+yearId).val();
+	var month = $("#"+monthId).val();
+	var day   = $("#"+dayId).val();
+	
+	return year+"."+month+"."+day;
+}
+
+function ajaxRequest(args,  otherParams, onSuccessXS) {
+    var async = nvl(args.async,false); // true:비동기, false:동기
+    var dataType = nvl(args.dataType,"json");
+
+    if (dataType=="html")
+        async = true;
+
+    var url = nvl(args.url);
+    
+    $.ajaxSetup({
+         async: async
+    });
+    
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+             xhr.setRequestHeader("AJAX","true");
+             //Progress.start();
+         }
+    });
+
+    $.ajax({
+         url: url,
+         type: "POST",       // 포스트 방식
+         contentType : "application/x-www-form-urlencoded; charset=utf-8",
+         async : async,       // 동기, 비동기
+         data: AjaxXS.makeParameters(otherParams),  // 서버로 보낼 데이타
+         dataType: dataType,
+         beforeSend: function(XMLHttpRequest, setting){
+             XMLHttpRequest.setRequestHeader("AJAX","true");
+         },
+         error : function(request, status, error){        	 
+             AjaxXS.onFailure(request, status, error, onSuccessXS);
+         },
+         success: function(data){
+             if (data.error != true) {
+                 AjaxXS.onSuccess(data, onSuccessXS);
+             } else {
+                 // 서버에서 지정한 에러 메시지를 뽑을 수 있다.
+                 AjaxXS.onException(data, onSuccessXS);
+             }
+
+         },
+         complete : function(data) { 
+             onSuccessXS;	// 통신이 실패했어도 완료가 되었을 때 이 함수를 타게 된다.
+         }
+     });
+}
+
+function fileDownload(args){
+    var fileName   = nvl(args.fileName);
+    var saveName   = nvl(args.saveName);
+    var repogitory = nvl(args.repogitory);
+
+    $("#hiddenFrame").remove();
+    //var $iFrm = $('<iframe id="hiddenFrame" width="100" height="100" frameBorder="0" name="hiddenFrame" scrolling="no"></iframe>');
+    //$iFrm.appendTo('body');
+
+    $('<iframe>', {
+        "id"     : "hiddenFrame",
+        "name"   : "hiddenFrame",
+        "frameBorder" : "0",
+        "width" : "300",
+        "height" : "300",
+        "scrolling"   : "no"
+    }).appendTo(document.body);
+
+  /*
+    $("#dummyForm").remove();
+    $('<form>', {
+        "id"     : "dummyForm",
+        "method" : "post",
+        "target" : "hiddenFrame",
+        "html"   : "<input type='hidden' name='fileName' value='"+fileName+"' />"+
+                   "<input type='hidden' name='saveName'  value='"+saveName+"' />"+
+                   "<input type='hidden' name='repogitory'  value='"+repogitory+"' />",
+        "action" : "/fd"
+    }).appendTo(document.body).submit();
+    */
+  
+    $("#dummyForm999").remove();
+    
+    if (isApplication()) {
+    	var url = gDomain + "/fd.sf?fileName=" + fileName + "&saveName=" + saveName + "&repogitory=" + repogitory;
+		Fcm.openInNewWindow(url);
+	} else {
+		var _target = Page.mobile=="Y"?"_blank" : "hiddenFrame";
+	    
+	    var myForm = $("<form id='dummyForm999' name='dummyForm999' method='get' target='"+_target+"' action='/fd.sf'></form>");
+	    $(document.body).append(myForm);
+	    myForm.append("<input type='hidden' name='fileName' value='"+fileName+"' />");
+	    myForm.append("<input type='hidden' name='saveName' value='"+saveName+"' />");
+	    myForm.append("<input type='hidden' name='repogitory' value='"+repogitory+"' />");
+	    setOtherParams(document.dummyForm);
+	    myForm.submit();
+    }
+}
+
+
+// 도메인명 반환
+function rtnDomainName(url)
+{
+	url = url.split('//');
+	url = url[1].substr(0,url[1].indexOf('/'));
+	return nvl(url);
+}
+
+var formToJSON = function(selector) {
+    var obj = null;
+    try {
+        var arr = $(selector).serializeArray();
+        if ( arr ) {
+            obj = {};
+            jQuery.each(arr, function() {
+                obj[this.name] = this.value;
+            });
+        }// if ( arr ) {
+    }
+    catch(e) {
+    	jAlert(e.message, '안내', function(){});
+    }
+    finally  {}
+
+    return obj;
+};
+
+// ajax xs 공통
+AjaxXS = {
+  status : "",
+  // ajax용 parameter 만들기
+  makeParameters: function (otherParams) {
+    otherParams = otherParams||{};
+    var unformat = {};
+    // parameters 가 string 일 경우 object type 으로 변경
+    if ( typeof otherParams == 'string' ) {
+    	otherParams = $.parseQuery(otherParams.replace(/%/g,'%25'));
+    }
+   
+    for (var jname in otherParams) { // 공통.파라메터 세팅
+        var val = otherParams[jname];
+        otherParams[jname] = val;
+        // otherParams[jname] = encodeURI( encodeURIComponent( val ) );
+        /*if ( typeof otherParams[jname] == 'string' ) {
+	        try {
+	        	console.log("=============otherParams["+jname+"]==================");
+	        	console.log(otherParams[jname]);
+	        }
+	        catch (e) {}
+	        otherParams[jname] = otherParams[jname].replace(/=/g,'%3D');
+        }*/
+        // if(jname=="remark")
+        //alert(jname+":"+ otherParams[jname])
+    }
+    /*
+    for (var name in otherParams) {
+        value =  otherParams[name];
+        
+        if(name.endsWith("_f")) {        	
+            var key = String(name);
+            key = replaceStr(key,"_f","");
+            var data_format = $("#"+name).attr('data_format');
+
+            unformat[key] = restoreValue(value, data_format); // aaa_f:2014.05.05
+																// =>
+																// aaa:20140505
+            $.extend(otherParams, unformat);
+        }
+    }
+*/
+    // 강제 parameters
+    var forceParams = {pid:''};
+
+    var parameters = $.extend(otherParams, forceParams);
+
+    return parameters;
+  },
+  // ajax 결과 성공한 경우 수행함수
+  onSuccess: function (data, onSuccessXS) {
+    
+    // var disabledElements = $("[data_format]");
+    // disabledElements.each(function(x) {
+    // inputSetValueAuto(this, "");
+    // });
+
+    try {
+        data.dataset.length = nvl(data.dataset.length,0);
+    }
+    catch (e) {}
+
+    // setTimeout(function() {
+    // onSuccessXS(data);
+    // },1);
+
+    onSuccessXS(data);
+  },
+  // ajax 결과 성공한 경우 수행함수
+  onSuccessSync: function (data, onSuccessX) {
+
+    return onSuccessX(data);
+  },
+  // http 응답 오류 발생한 경우 수행함수
+  onFailure: function (request, status, error, onSuccessX)  {
+    if(request.status==0){
+        //showMessage('You are offline!!\n Please Check Your Network.');
+//    	console.log('You are offline!!\n Please Check Your Network.');
+    }else if(request.status==404){
+        //showMessage('Requested URL not found.');
+//        console.log('Requested URL not found.');
+    }else if(request.status==500){
+        //showMessage('Internel Server Error.');
+//        console.log('Internel Server Error.');
+    }else if(error=='parsererror'){
+        //showMessage('Error.\nParsing JSON Request failed.');
+//        console.log('Error.\nParsing JSON Request failed.');
+    }else if(error=='timeout'){
+        //showMessage('Request Time out.');
+//        console.log('Request Time out.');
+    }else {
+        // alert('Unknow Error.\n'+request.responseText);
+    }
+    var data = {};
+    data.error = true;
+
+    return onSuccessX(data);
+
+  },
+  
+  // 스크립트 오류 발생한 경우 수행함수
+  onException: function (data, onSuccessX)  {
+	  alert("time.");
+	  console.log("time.");
+    var s = "";
+    for ( var p in data ){
+        s += p+"=["+data[p]+"]\n"; 
+    }
+    
+    var message = nvl(data.message); // 메세지
+    console.log("message :"+message);
+    if (message.indexOf("LOGIN_CHECK_FAIL") > -1) {  // 로그인이 메세지이면
+        message = removeChar(message);
+        popLogin();
+    } else if (message.indexOf("AUTH_SESSION_FAIL") > -1) {
+    	s = removeChar(message);
+        alert(s);
+        Fcm.goMemberJoinPage();
+    } else {
+        s = removeChar(message);
+        alert(s);
+    }
+
+    return onSuccessX(data);
+  },
+
+  // 조회결과가 없을 경우
+  onNodataMessage: function (data, onSuccessX) {
+    return onSuccessX(data);
+  }
+};
+
+
+jQuery.parseQuery = function(qs,options) {
+        var q = (typeof qs === 'string' ? qs : window.location.search), o = {'f': function(v) {return unescape(v).replace(/\+/g, ' ');}}, options = (typeof qs === 'object' && typeof options === 'undefined') ? qs : options, o = jQuery.extend({}, o, options), params = {};
+        jQuery.each(q.match(/^\??(.*)$/)[1].split('&'), function(i,p) {
+                p = p.split('=');
+                p[1] = o.f(p[1]);
+                params[p[0]] = params[p[0]] ? ((params[p[0]] instanceof Array) ? (params[p[0]].push(p[1]), params[p[0]]) : [params[p[0]], p[1]]) : p[1];
+        });
+
+        return params;
+};
+
+
+
+
+
+
+//파일사이즈 체크
+var isFileSize = function(fileid, size) {
+  try {
+      
+      var fileSize = 0;
+
+      var v = $("#" + fileid)[0].value;
+
+      if(v.length==0) return true;
+
+
+      //for IE
+      if (XBrowers.type().indexOf("IE") > -1) {
+          //before making an object of ActiveXObject, 
+          //please make sure ActiveX is enabled in your IE browser
+
+          /* 20150120 신뢰할수 있는 사이트 문의가 많아 주석처리
+          var objFSO = new ActiveXObject("Scripting.FileSystemObject"); 
+          var filePath = $("#" + fileid)[0].value;
+          var objFile = objFSO.getFile(filePath);
+          var fileSize = objFile.size; //size in kb
+          fileSize = fileSize / 1048576; //size in mb 
+          */
+          return true;
+      }
+          //for FF, Safari, Opeara and Others
+      else {
+          fileSize = $("#" + fileid)[0].files[0].size; //size in kb
+          fileSize = fileSize / 1048576; //size in mb 
+
+          return (fileSize < size);
+      }
+      
+  }
+  catch (e) {
+      alert("신뢰할 수 있는 사이트로 등록이 되어있어야 합니다.\n 도구 > 인터넷옵션 > 보안 > 사이트");
+  }
+};
+
+//첨부파일 체크
+var valideAttachFile = function(args) {
+  args = nvl(args,{});
+
+  var id = nvl(args.id,"files");
+  var size = nvl(args.size,"1");
+  
+  var file = $('#'+id).val();
+
+  var file_gubun = file.split('.');
+	var gubun = file_gubun[file_gubun.length - 1];
+
+	if(file != '') {
+		if(file_gubun.length > 1) {
+			if(gubun.toUpperCase() != 'JPG' && gubun.toUpperCase() != 'GIF' && gubun.toUpperCase() != 'PNG') {
+				showMessage(Msg.get("FCM","USER-1265")); // 이미지는 확장자가 JPG, GIF, PNG. 중 하나여야 합니다.
+				return false;
+			} 
+		}
+  }
+
+  // check size
+  if(!isFileSize(id, size)) {
+	  showMessage(Msg.get("FCM","USER-1267"),"1"); // 이미지는 최대 #[1]M이하의 JPG, GIF, PNG 파일만 가능합니다.
+      return false;
+  }
+
+ return true;
+};
+
+
+function ajaxUploadRequest(args,  otherParams, onSuccessXS) {
+	var async = nvl(args.async, "false");
+    var uploadFormId = nvl(args.uploadFormId, "uploadForm");
+    var form = new FormData($("#" + uploadFormId)[0]);
+    var url = nvl(args.url);
+    
+    $.ajaxSetup({
+         async: async
+    });
+    
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+             //alert('a');
+             xhr.setRequestHeader("AJAX","true");
+             Progress.start();
+         }
+    });
+
+    $.ajax({
+         url: url,
+         data: form,
+         dataType: 'json',
+         processData: false,
+         contentType: false,
+         async: false,
+         type: 'POST',
+         beforeSend: function(XMLHttpRequest, setting){
+             Progress.start();      
+             XMLHttpRequest.setRequestHeader("AJAX","true");
+         },
+         error : function(request, status, error){
+             Progress.stop();
+             
+             AjaxXS.onFailure(request, status, error, onSuccessXS);
+         },
+         success: function(data){
+             // 성공시 탑니다
+             if (data.error != true) {
+                 // onComplete(data);
+                 AjaxXS.onSuccess(data, onSuccessXS);
+             } else {
+                 // 서버에서 지정한 에러 메시지를 뽑을 수 있다.
+                 //alert(data.code + "\t" + data.id + "\t" + data.message);
+                 AjaxXS.onException(data, onSuccessXS);
+             }
+
+         },
+         complete : function(data) { 
+             Progress.stop();
+             onSuccessXS;	// 통신이 실패했어도 완료가 되었을 때 이 함수를 타게 된다.
+         }
+     });
+};
+
+
+
+/**************************************START.sss추가 *******************************************/
+/**
+ * 작 성 자 : SSS
+ * 작 성 일 : 2014-01-10
+ * 개    요  : 체크박스 선택 체크
+ * return값 : void
+              if(!checkBoxCheck(checkId)) return; // 체크박스 선택여부 체크
+*/
+function checkBoxCheck(ele){
+    if(nvl(ele)=="") return false;
+
+    var cnt = 0;
+    $("input:checkbox[name="+ele+"]:checked").each(function (index) {
+        //alert($(this).val());
+        cnt++;
+    });
+
+
+    if(cnt==0) {
+    	if (ele == "bskNoSpCode") {
+    		showMessage(Msg.get("FCM","USER-1332")); // 상품을 선택하세요.
+    	} else {
+    		showMessage(Msg.get("FCM","USER-1090")); // 대상을 선택 하십시오.
+    	}
+        return false;
+    }
+
+    return true;
+}
+
+
+/**
+ * 작 성 자 : SSS
+ * 작 성 일 : 2014-01-10
+ * 개    요  : chr 포함 갯수
+ * return값 : void
+              alert(replaceStr(selectId,"azListSelBox",""));
+*/
+function replaceStr(str,str1,str2) {
+ 
+  str = ""+str;
+ 
+ if (str == "" || str == null) return str;
+
+ while (str.indexOf(str1) != -1) {
+  str = str.replace(str1,str2);
+ }
+ return str;
+
+}
+
+/**
+ * 작 성 자 : SSS
+ * 작 성 일 : 2014-01-10
+ * 개    요  : chr 포함 갯수
+ * return값 : void
+*/
+function countChr(str, chr) {
+  var count = 0;
+  var length = str.length;
+  for ( var n = 0; n < length; n++ ) {
+    if ( chr == str.charAt(n) ) count++;
+  }
+  return count;
+}
+
+// get max zindex
+$.maxZIndex = $.fn.maxZIndex = function(opt) {
+    /// <summary>
+    /// Returns the max zOrder in the document (no parameter)
+    /// Sets max zOrder by passing a non-zero number
+    /// which gets added to the highest zOrder.
+    /// </summary>    
+    /// <param name="opt" type="object">
+    /// inc: increment value, 
+    /// group: selector for zIndex elements to find max for
+    /// </param>
+    /// <returns type="jQuery" />
+    var def = { inc: 10, group: "*" };
+    $.extend(def, opt);    
+    var zmax = 0;
+    $(def.group).each(function() {
+        var cur = parseInt($(this).css('z-index'));
+        if(cur > 2047483646) {
+            return true; //continue;
+        }
+        zmax = cur > zmax ? cur : zmax;
+    });
+    if (!this.jquery)
+        return zmax;
+
+    return this.each(function() {
+        zmax += def.inc;
+        $(this).css("z-index", zmax);
+    });
+}
+
+
+
+
+// 메세지 정리
+function removeChar(msg) {
+
+    if (nvl(msg).length == "") return msg;
+
+    msg = replaceStr(msg,"[USER]","");
+    msg = replaceStr(msg,"ORA-20000:","");
+    msg = replaceStr(msg,"ORA-0000: normal, successful completion","");
+    msg = replaceStr(msg,"\\n","\n");     
+    msg = replaceStr(msg,"<br>","\n");
+    msg = replaceStr(msg,"<BR>","\n");
+
+    var s = msg.indexOf("[");
+    var s1 = msg.indexOf("]");
+
+    if (msg.indexOf("[USER") > -1 || msg.indexOf("[LOGIN_CHECK_FAIL") > -1 
+    		|| msg.indexOf("[AUTH_SESSION_FAIL") > -1 )
+        msg = msg.substring(s1+1);
+
+    if (countChr(msg, "^") > 2){
+        var s = msg.substr(0,msg.indexOf("^"));
+        var e = msg.substr(msg.indexOf("^")+1, msg.length);
+        for (var i=0, n=e.length; i<n; i++) {
+            if (e.charAt(i)=="^") {
+                t = i;
+            }
+        }
+
+        var t = e.substr(t+1,e.length);
+
+        msg = s+t+"";
+    }
+
+    return msg;
+  }
+
+
+Fcm.popLayerBodyOpen = function(divId , data, backFlag){
+
+    if(data.indexOf("LOGIN_CHECK_FAIL") > -1) return;  // 로그인이 메세지가 있으면 중단
+   
+	
+	if(Page.mobile == 'Y'){
+		if($("#" + divId).size() < 1){
+			$("body").empty().append('<div id="' + divId + '" style="display:none;"></div>');
+			
+		}
+		$("#" + divId).html(data);
+//		$("#" + divId).css({
+//			  "z-index"  : "10001"
+//			, "position" : "absolute"
+//			, "width"    : "100%"
+//		});
+
+		$("#" + divId).show();
+//	    $('#detailPop .pop_inner').center();
+	    
+//		$("#" + divId).find('.close').off('click');
+//		$("#" + divId).find('.close').on('click',function(){
+//			$("#" + divId).hide();	
+//	    });
+//		$("#" + divId + ' .content').center();
+//		$("#" + divId + " .container").css('height',$(document).height()+'px');
+//		$("#" + divId + ' .content').off();
+//		$("#" + divId + ' .content').on('resize',function(){
+//			$("#" + divId + ' .content').center();	
+//			$("#" + divId + " .container").css('height',$(document).height()+'px');
+//		});
+		$("#" + divId).contents().unwrap();
+	}else{
+		if($("#" + divId).size() < 1){
+			//$('<div id="' + divId + '" style="display:none;"></div>').appendTo('.content');
+            $("body").append('<div id="' + divId + '" style="display:none;"></div>');
+			
+		}
+		$("#" + divId).html(data);
+		if(backFlag){
+			$("#" + divId).css({
+				  "z-index"  : "10001"
+				, "position" : "absolute"
+				, "display"  : "none"
+				, "background-color" : "#ffffff"
+			});
+		}else{
+			$("#" + divId).css({
+				  "z-index"  : "10001"
+				, "position" : "absolute"
+				, "display"  : "none"
+			});
+		}
+		
+
+		$("#" + divId).show();
+//	    $('#detailPop .pop_inner').center();
+	    
+        /* 해당 팝업에서 close는 제어해.btn_close야 함 - 부모창를 x 클릭 시 제어해야 경우도 있기 때문
+		$("#" + divId).find('.close, ').off('click');
+		$("#" + divId).find('.close, .btn_close').on('click',function(){
+			$("#" + divId).remove();	
+	    });
+        */
+		
+		$("#" + divId).center("");
+		//$("#" + divId).css('top', (($(window).scrollTop() + (($(window).height()-$("#" + divId).outerHeight())/2))-($('#header').outerHeight()+nvl($('.location').outerHeight(),0))-40)+'px').show();
+
+	}
+
+    var z = $.maxZIndex(); // count div popup
+
+    if(POP_MAP.get(divId)=="") { // set poup map
+        var p = {};
+        p.id = divId;
+        p.div_type = "LAYER";
+
+        POP_MAP.put(divId,p);
+        Z_INDEX++;
+    }
+	
+};
+
+// 기타 파라미터를 세팅한다.
+function setOtherParams(form, f, s) {
+      form = form || document.forms[0];
+      f = f == null ? "f" : f;
+      s = s == null ? "" : s;
+      var f_ =  "_" + f;
+      var s_ = s;
+    
+    try {
+        var newEle = document.createElement("input"); // 모발
+
+        newEle.setAttribute("type", "hidden") ;
+        newEle.setAttribute("name", "mobile");
+        newEle.setAttribute("id",   "mobile");
+        form.appendChild(newEle);
+        document.getElementById("mobile").value = nvl(Page.mobile,"N");
+
+     }catch (e){
+         //alert("Fcm.setOtherParams=>"+e)
+     }
+}
+
+/**
+* 작 성 자 : SSS
+* 작 성 일 : 2014-02-04
+* 개    요  : 금일 조회 조회함
+*
+* return값 : true/false
+
+    var toDay = getToday();     => 20140305
+    var toDay = getToday(".");  => 2014.03.05
+*/
+function getToday(flag, format) {
+
+  var dt = new Date();
+
+  if(nvl(flag)=="") {
+      flag = "YYYYMMDD";  
+  }
+
+    if(format==".")
+      dt =  dt.getFullYear() + '.' + numFormat(dt.getMonth()+1,2) + '.' + numFormat(dt.getDate(),2);
+    else if(format=="-")
+      dt = dt.getFullYear() + '-' + numFormat(dt.getMonth()+1,2) + '-' + numFormat(dt.getDate(),2);
+    else
+      dt = dt.getFullYear() + '' +  numFormat(dt.getMonth()+1,2) +'' +  numFormat(dt.getDate(),2);
+
+    if(flag=="YYYYMMDD" || flag=="YMD")
+        return dt.substring(0,8);
+    else if(flag=="YYYY")
+         return dt.substring(0,4);
+    else if(flag=="MM")
+         return dt.substring(4,6);
+    else if(flag=="DD")
+         return dt.substring(6,8);
+    else if(flag=="TM")
+         return dt.substring(8);
+
+}
+//alert(getToday('MM'));
+
+/**
+* numFormat(strNum, intLen)
+* 개    요 : 숫자 자리수 포맷-자릿수에 맞게 '0'를 채움
+* return값 : string
+*/
+function numFormat(strNum, intLen) {
+    var strTmp = '' + strNum;
+    var intLenNum = strTmp.length;
+    var strRtnNum = '';
+
+    if (intLenNum > intLen)
+        return strTmp;
+
+    for(i=0;i<intLen-intLenNum;i++) {
+        strRtnNum = strRtnNum + '0';
+    }
+
+    return strRtnNum + strTmp;
+}
+
+
+/**
+* 개    요 : 년, 월, 일 에대한 i만큼의 전후 날짜 계산
+* 인    수 : 1. strFlg  : 구분 ("y":년, "m":월, "d":일)
+*            2. i       : (-i:before, +i:after) difference value
+*            3. strCheckDate : 날짜
+*            4. Delimitor : 구분자 기본값('-')
+* return값 : string YYYY-MM-DD
+* ex)   var maxDate = addDate("d", 60, "20140105", "");
+*/
+function addDate(strFlg, i, strCheckDate, Delimitor) {
+    Delimitor = Delimitor==null?"-":Delimitor;
+    strCheckDate = getRawData(strCheckDate);
+
+    var dateTypeVal = new Date(strCheckDate.substring(0,4),strCheckDate.substring(4,6)-1,strCheckDate.substring(6,8));
+
+    var retDate;
+
+    var nWeekDay=dateTypeVal.getDay();
+
+    if (strFlg.toUpperCase() == "Y") {
+        retDate = new Date(dateTypeVal.getFullYear() + eval(i),dateTypeVal.getMonth(),dateTypeVal.getDate());
+    }
+    else if (strFlg.toUpperCase() == "M") {
+        retDate = new Date(dateTypeVal.getFullYear(),dateTypeVal.getMonth() + eval(i),dateTypeVal.getDate());
+    }
+    else if (strFlg.toUpperCase() == "D") {
+        retDate = new Date(dateTypeVal.getFullYear(),dateTypeVal.getMonth(),dateTypeVal.getDate() + eval(i));
+    }
+    else{
+        retDate = new Date(dateTypeVal.getFullYear(),dateTypeVal.getMonth(),dateTypeVal.getDate());
+    }
+    return retDate.getFullYear() + Delimitor + numFormat(retDate.getMonth()+1,2) + Delimitor + numFormat(retDate.getDate(),2);
+
+}
+
+/**
+* getRawData(strData)
+* 개    요 : 입력값에서 구분자인 '/', '.', '-',':' 등을 제거하여 리턴
+* return값 : string
+*/
+function getRawData(strData) {
+    strData = String(strData);
+
+    if (strData==null || strData == "")
+        return "";
+    strData = strData.replace(/\//g,"");
+    strData = strData.replace(/-/g,"");
+    strData = strData.replace(/\./g,"");
+                    strData = strData.replace(/\,/g,"");
+    strData = strData.replace(/\:/g,"");
+    return strData;
+}
+
+// 오브젝트 좌표로 스크롤 이동
+function selectfocus(id,flag,v,gb) {
+    try {
+        
+        if(nvl(gb)=="") {
+        	var p = $("#"+id.replace(/#/g, ''));
+        
+        }else {
+        	var p = id;
+        }
+//        var p = $("#"+id).closest('div');
+        var offset = p.offset();
+        var scroll = getNowScroll();
+        var more_l = "";
+
+        if(nvl(flag)=="") {
+        	
+            if(offset.top < 0) {    // select  디자인 때문에 wrap div의 영역을 참조함
+                var p = $("#"+id+"_wrap");
+                offset = p.offset();
+               
+            }
+            if((Number(offset.top) < Number(scroll.Y)) && Number(scroll.Y) > 0) { //
+            	jQuery('html, body').animate( { 'scrollTop': offset.top-100 }, 'medium' ); // 스크롤 이동
+                //$('#'+input.id)[0].scrollIntoView(true);
+            }
+        }
+        else {
+            if( nvl(flag)=="TOP" && Number(nvl(v,"0")) > 0 ) {
+                jQuery('html, body').animate( { 'scrollTop': offset.top-v }, 'medium' ); // 스크롤 이동   
+            } 
+            else {
+                jQuery('html, body').animate( { 'scrollTop': offset.top-10 }, 'medium' ); // 스크롤 이동   
+            }
+         }
+
+
+        $("#"+id).first().focus();
+        $("#"+id).select();
+         
+
+        $("#"+id+"_wrap").first().focus();
+        $("#"+id+"_wrap").select();
+
+    }
+    catch (e){}
+
+}
+
+
+
+
+//  set event
+Fcm.setEvent = function() {
+    try{
+        Page.srcElement = event.srcElement;
+    }
+    catch (e){}
+}
+
+
+// 2개의 json을 연결
+function jsonConcat(o1, o2) {
+ for (var key in o2) {
+  o1[key] = o2[key];
+ }
+ return o1;
+}
+
+// 속성 정보조회
+Fcm.getProperty = function(args) {
+    args = nvl(args,{});
+    var val = "";
+
+    var key = nvl(args.key);
+    var xml = nvl(args.xml);
+
+    var goTo    = "getProperty";
+    var params  = "&key="+key;
+        params += "&xml="+xml;
+    ajaxRequest({url:"/fcm000.sf?goTo="+goTo+params}, {}, function(data)
+    {
+        if (data.error != true) {
+            val = data.dataset[0].val;
+        }
+    });
+
+    return val;
+};
+
+// 달력
+Fcm.datePickerShow = function(obj) {
+    try {
+        $( obj ).datepicker().datepicker("show");        
+    }
+    catch (e){}
+};
+
+
+// 현재 스크롤 위치
+function getNowScroll(){
+    var de = document.documentElement;
+    var b = document.body;
+    var now = {};
+
+    now.X = document.all ? (!de.scrollLeft ? b.scrollLeft : de.scrollLeft) : (window.pageXOffset ? window.pageXOffset : window.scrollX);
+    now.Y = document.all ? (!de.scrollTop ? b.scrollTop : de.scrollTop) : (window.pageYOffset ? window.pageYOffset : window.scrollY);
+
+    return now;
+}
+
+// is mobile?
+Fcm.isMobile = function() {
+    if (navigator.userAgent.match(/iPad/) == null && navigator.userAgent.match(/iPhone|Mobile|UP.Browser|Android|BlackBerry|Windows CE|Nokia|webOS|Opera Mini|SonyEricsson|opera mobi|Windows Phone|IEMobile|POLARIS/) != null){
+	    return true;	
+	} else {
+        return false;
+    }
+}
+
+// 회원가입 페이지 이동
+Fcm.goMemberJoinPage = function(args) {
+    args = nvl(args,{});
+    window.location = gDomains+"/fcm000.sf?goTo=memGubun";
+    return false;
+};
+
+function number_format(num) {
+	num = ""+num;
+	num = num.replace(/,/g, "");
+	var num_str = num.toString();
+	var result = '';
+	for(var i=0; i<num_str.length; i++) {
+		var tmp = num_str.length-(i+1);
+		if(i%3==0 && i!=0) result = ',' + result;
+		result = num_str.charAt(tmp) + result;
+	}
+	return result;
+}
+
+function tagEscape(str){
+	var s = "";
+	if(str == undefined){
+		s = "";
+	}else{
+		s = str;
+	}
+	return String(unescape(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/\n/g,'<br/>');
+}
+
+
+
+
+Fcm.goHttpMenu = function(args) { // 호출 URL, 로그인(Y:로그인 체크)
+	args = nvl(args,{});
+		window.location.href = gDomain+args.url;
+};
+
+/**************************************END.sss 아닌분이 추가 *******************************************/
+
+
+// 로그인화면 초기화 처리
+Fcm.popLoginInit = function(args) {
+    args = nvl(args,{});
+
+    // START.필수입력
+	$("#memId").attr("required",true);  // ID-필수입력
+	$("#pwNo").attr("required",true);   // PASSWORD-필수입력
+	// END.필수입력
+
+    /* START.COOKIE */
+	var save_id = Fcm.getCookie('save_id');
+	if (save_id != "") {
+		Fcm.setCheckBox("save_id",true);
+	}
+	/* END.COOKIE */
+
+	// 패스워드 입력 시, 엔터키 발생
+	$("#pwNo").keydown(function(event) {
+		var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+		
+		// 엔터이벤트 발생 시, 패스워드로 포커스 이동
+		if (keyCode == 13) {$('#btnLoginAction').trigger('click');}
+	});
+
+}
+
+
+//로그아웃 처리
+Fcm.goLogout = function(args) {
+	args = nvl(args,{});
+	var app = 'N';
+    var returnUrl = nvl(args.returnUrl, null);
+    
+    $("#dummyForm").remove();
+    var myForm = $("<form id='dummyForm' name='dummyForm' method='post' action='"+gDomain+"/fcm000.sf?goTo=logout'></form>");
+    $(document.body).append(myForm);
+    myForm.append("<input type='hidden' name='ignore' value='Y' />");
+    
+    if(returnUrl != null && returnUrl.indexOf("smoothieking") != -1){
+    	myForm.append("<input type='hidden' name='returnUrl' value='" + returnUrl +"' />");
+    }
+
+    setOtherParams(document.dummyForm); // mobile 여부 강제적으로 넣어준다.
+    myForm.submit();
+}
+
+// 로그인 처리
+Fcm.goLogin = function(args) {
+    args = nvl(args,{});
+
+    var last_args = {};
+    last_args = formToJSON("#loginForm");
+    args = jsonConcat(last_args, args);
+
+    if (Fcm.isLoginYn() == "Y") { // 로그인이 되었다면 로그아웃하라는 메세지
+        Fcm.gotoMain();
+        return;
+    }
+    var regExp = /\s/g;
+    var memId = $("#loginForm input[name='memId']").val().replace(regExp,'');
+    var pwNo = $("#loginForm input[name='pwNo']").val().replace(regExp,'');
+    var returnUrl = $("#loginForm input[name='returnUrl']").val();
+    
+    var saveId = $("#loginForm input[name='save_id']").is(':checked');
+    var _parent = Fcm.getParent();
+    var goTo  = "loginAction";
+    	params = "&ignore=Y";   // 공통영역 조회 안함
+    	
+    ajaxRequest({url:"/fcm000.sf?goTo="+goTo+params}, {memId:memId,pwNo:pwNo,returnUrl:returnUrl}, function(data)
+    	    {console.log("aaa");
+    	    	if (data.error != true) {
+    	    		var loginStatus  = nvl(data.loginStatus);  // 로그인결과코드
+    	    		var loginMessage = removeChar(nvl(data.loginMessage)); // 로그인결과메세지
+    	            var returnUrl    = nvl(data.returnUrl);    // return url
+    	            args.returnUrl = returnUrl;
+    	            // START.LOGIN
+    	            if (loginMessage !=null && loginMessage.length > 0 ) { // 로그인 메세지가 있다면
+    	            	var msg = loginMessage;
+    	                args.callFrom = "LOGIN_POP";
+
+    	                if (loginStatus.indexOf("DORMANCY_MEMBER") > -1) { // 휴면회원
+    	                	location.href = gDomain+"/fcm000.sf?goTo=noticeDormancy";
+    	                	return false;
+    	                } else if (loginStatus.indexOf("PASSWORD_TIMEOUT") > -1) { // 비밀번호 변경 90일 체크
+    	                        args.callBackFuc = "Fcm.goPwExpire"; // 비밀번호 팝업
+    	                        args.returnUrl = "";
+
+    	                    Fcm.popupRedirect(args); // https -> http 로 전환을 위해 callback    
+    	                } else if (loginStatus.indexOf("OVER_PASSWORD") > -1) { // 비밀번호 변경 90일 체크
+    	                	alert(msg);
+    	                	Fcm.popSearchIdnPwIF({flag:'P'});
+                        	return false;
+    	                	
+    	                	//NOMATCH_ID
+    	                } else { // 로그인 실패
+    	                	alert(msg);
+    	                	return false;
+    	                }
+    	            } else {
+    	            	if (saveId) {
+    	            		var date = new Date();
+        	            	date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
+        	            	var expires = "; expires=" + date.toGMTString();
+    	            		
+        	            	document.cookie = 'memId' + "=" + data.loginIdCk + expires +"; path=/ ";            	    		
+            	    		Fcm.setCookie({cookieName:'save_id',val:"save_id",chk:'save_id',exdays:'365'});
+    	            	} else {
+    	            		Fcm.setCookie({cookieName:'memId', val:''});
+    	            		Fcm.setCookie({cookieName:'save_id', val:''});
+    	            	}
+    	            	
+    	            	// 로그인 성공                	
+                    	Fcm.popupRedirect(args); // https -> http 로 전환을 위해 callback
+    	            }
+    	    	}
+    	    	// END.LOGIN
+    	    });
+    
+	return args;
+    
+}
+
+// 체크박스 세팅
+Fcm.setCheckBox = function(id, flag) {
+	$("#"+id).attr("checked",flag);
+	$("#"+id).parent('label').addClass('on');
+
+    return false;
+}
+
+
+$(document).ready(function(){
+	// 대문자 -> 소문자
+	$(".textLowerCase").on('keyup',function(){
+		$(this).val($(this).val().toLowerCase());
+	});
+	
+	$(".textLowerCaseEngNum").on('keyup',function(){
+		$(this).val($(this).val().toLowerCase());
+	    if (!(event.keyCode >=37 && event.keyCode<=40)) {
+	         var inputVal = $(this).val();
+	         $(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+	    }
+	});
+	
+	$(".textLowerCaseEngNum").on('blur',function(){
+	    $(this).val($(this).val().replace(/[^a-z0-9]/gi,''));
+	});
+	
+	//핸드폰 숫자만
+	$(".textOnlyNum").on('keyup',function(){
+	    $(this).val($(this).val().toUpperCase());
+	    var inputVal = $(this).val();
+		if((event.keyCode>64)&&(event.keyCode<91)){
+	        $(this).val(inputVal.replace(/[^0-9]/gi,''));
+	    }
+	});
+	
+	$(".textOnlyNum").on('blur',function(){
+	    $(this).val($(this).val().replace(/[^0-9]/gi,''));
+	});
+	
+	//날짜 : 월
+	$(".textOnlyMonth").on('blur',function(){
+		var month = Number($(this).val());
+		if(month < 1 || month > 12) {
+			alert('1~12사이의 값을 입력해주세요.');
+			$(this).focus();
+		}
+//		$(this).val($(this).val().replace(/[^1-12]/gi,''));
+	});
+	
+//	$(".textOnlyDate").on('keyup',function(){
+//		$(this).val($(this).val().replace(/[^1-31]/gi,''));
+//	});
+	
+	//날짜 : 일
+	$(".textOnlyDate").on('blur',function(){
+		var month = Number($(this).val());
+		if(month < 1 || month > 31) {
+			alert('1~31사이의 값을 입력해주세요.');
+			$(this).focus();
+		}
+//		$(this).val($(this).val().replace(/[^1-31]/gi,''));
+	});
+	
+	// 숫자/영문만 - 편명, 여권번호
+	$(".textUpperCaseNum").on('keyup',function(){
+	    $(this).val($(this).val().toUpperCase());
+	
+	    if (!(event.keyCode >=37 && event.keyCode<=40)) {
+	         var inputVal = $(this).val();
+	         $(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+	    }
+	});	
+	
+	$(".textUpperCaseNum").on('blur',function(){
+	    $(this).val($(this).val().replace(/[^a-z0-9]/gi,''));
+	});
+	
+	
+	// 고객이름 대문자로 치환 및 valid check
+	$(".textUpperCase").on('keyup',function(){
+	    $(this).val($(this).val().toUpperCase());
+	    var inputVal = $(this).val();
+	    if (!(event.keyCode >= 37 && event.keyCode <= 40)) {
+	        $(this).val(inputVal.replace(/[^a-z]/gi,''));
+	    }
+	});
+	
+	
+	$(".textUpperCase").on('blur',function(){
+	    $(this).val($(this).val().replace(/[^a-z]/gi,''));
+	});
+	
+	//알파벳 대문자, 공백
+	$(".textUpperCase2").on('keyup',function(){
+		$(this).val($(this).val().replace(/[^a-z^\s]/gi,'').toUpperCase());
+	});
+	
+	$(".textUpperCase2").on('blur',function(){
+		$(this).val($(this).val().replace(/[^a-z^\s]/gi,'').toUpperCase());
+	});
+	
+	// 대문자로 치환 및 valid check
+	$(".textUpperCaseEngOnly").on('keyup',function(){
+	    $(this).val($(this).val().toUpperCase());
+	     if (!(event.keyCode >=37 && event.keyCode<=40)) {
+	         var inputVal = $(this).val();
+	         $(this).val(inputVal.replace(/([^가-힣\x20^a-z^A-Z\-\.,_\/])/i,''));
+	     }
+	});
+	
+	// 알파벳만 
+	$(".onlyAlphabet").keyup(function(event){
+	    if (!(event.keyCode >=37 && event.keyCode<=40)) {
+	        var inputVal = $(this).val();
+	        $(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+	    }
+	});
+	
+    // submit 시 윈도우명 name 추가
+    $("form").submit(function() {
+        if(Fcm.isPopup()=="Y") { // 팝업이면 윈도우명을 추가적으로 넘긴다.
+            var theForm = $(this);
+            var formID = theForm.attr("id");
+           $('<input />').attr('type', 'hidden').attr('name', "windowName").attr('value', Fcm.getWindowName()).appendTo('#'+formID);
+        }
+
+        //  placeholder value set blank
+        try{
+            $('input[type=text],textarea').each(function(){
+                if($(this).attr('data-value'))  { // holder면
+                    var id = $(this).id;
+                    if($("#"+id).val() == $("#"+id).attr('data-value')) 
+                        $("#"+id).val('');
+                }
+            }); 
+        }
+        catch (e){}
+
+    });
+    
+    // 패드 입력 시 스크롤 이동 
+    $( ".scrollInputMove" ).focus(function() {
+        var position = $(this).position();
+        $("html, body").animate({ scrollTop: position.top }, "slow");
+
+    });
+});
+
+Fcm.resetSelOpt = function($obj, optStr) {
+	var origin = $obj.find('.customized_hide');
+	origin.html(optStr);
+	var wrap = origin.parent(".customized");
+	var selected = $obj.index('option:selected');
+	var w_style = origin.attr("style");
+	var select_list = wrap.find(".customized_selectlist");
+	var select_bar = wrap.find(".customized_selectbar");
+	var sense = 100;
+	select_list.html(function(){
+		var tmp = "<ul>";
+		$obj.find("option").each(function(n,k){
+			if($(k).attr("style")){
+				tmp+="<li><a href='#' class='color'><span style='background-color:"+$(k).css("background-color")+"'></span>"+k.text+"</a></li>";
+			}else{
+				tmp+="<li><a href='#'>"+k.text+"</a></li>";
+			};
+		});
+		tmp+="</ul>";
+		return tmp;
+	}).find("a").on("click", function(e){
+		e.preventDefault();
+		select_bar.find("a").text($(this).text());
+		selected = $(this).parent("li").index();
+		origin.find("option").eq(selected).prop('selected', true);
+		origin.trigger('change');		/* 2015.07.24 추가 */
+		select_list.hide();
+	});
+ 	select_bar.find("a").text(selected.text).on("click", function(e){
+ 		e.preventDefault();
+ 		if(select_list.is(":animated")){return false;}
+ 		wrap.addClass("active");
+ 		select_list.slideToggle("fast");
+ 	});
+ 	origin.on("change", function(e){
+ 		selected = this.selectedIndex;
+ 		select_bar.find("a").text(selected.text);
+ 	});
+ 	wrap.hover(function(){
+ 	}, function(){
+ 		select_list.slideUp("fast", function(){
+ 			wrap.removeClass("active");
+ 		});
+ 	});
+ 	wrap.on("mousewheel", function(e){
+ 		e.preventDefault();
+ 		select_list.scrollTop(select_list.scrollTop()+(-e.deltaY*sense));
+ 	});
+ 	if(w_style){
+ 		tmp = w_style;
+ 		wrap.attr("style", tmp)
+ 	}else{
+ 		wrap.css({"width":origin.width()+25});
+ 	};
+	
+};
+
+Fcm.deleteSelObj = function($obj) {
+	
+}
+
+// To move Scroll top
+Fcm.scrollTop = function() {
+	if (navigator.userAgent.match(/(iPod|iPhone|iPad|Android)/)) {           
+        window.scrollTo(200,100) // first value for left offset, second value for top offset
+    } else {
+        $('html,body').animate({
+            scrollTop: 0
+        }, 800, function(){
+            $('html,body').clearQueue();
+        });
+    }
+           
+    jQuery('html, body').animate( { 'scrollTop': 0 }, 'slow' ); // 스크롤 이동  
+    selectfocus("query3"); // 스크롤 이동
+}
+
+// APP Interface
+Fcm.App.callIf = function(args) {
+	args = nvl(args,{});
+	var callAction       = nvl(args.action,"");
+	
+	if (callAction == "MENU")
+	{
+		alert("메뉴호출");
+		return;
+	}
+	/* 푸시서버, 개인 디바이스 및 OS정보 저장 */
+	else if(callAction == "PUSH_UPD")
+	{
+		var setDeviceOs       = nvl(args.dev_os,"");
+		var setDeviceId       = nvl(args.dev_id,"");
+		alert("OS : "+setDeviceOs+" 아이디 : "+setDeviceId);
+		return;
+	}
+	/* 안드로이드 kitkat 파일 업로드 (input file tag 사용 불가 isuue) */
+	else if(callAction == "KITKAT_FILE_UPD")
+	{
+		var repository       = nvl(args.repository,"");   //  IMAGE  / ONLINE
+		var type       = nvl(args.type,"");               //  WDINVI / LOWEST / SPORDER / SPRVW / SPQNA / GENQNA
+		var formName       = nvl(args.formName,"files");               //  WDINVI / LOWEST / SPORDER / SPRVW / SPQNA / GENQNA
+		alert("repository"+repository+" type : "+type) + " formName : " + formName;
+		return;
+	}
+	/* 언어 */
+	else if(callAction == "LANG")
+	{
+		return nvl(Page.lang);
+	}
+};
+
+/*
+안드로이드 kitkat 파일 업로드 설명
+
+1.1 안드로이드 kitkat 파일 업로드 함수
+window.Android.open({repository:"IMAGE" , type : "WDINVI" });
+
+2.1 파라미터
+repository  :    IMAGE  / ONLINE
+type          :    WDINVI / LOWEST / SPORDER / SPRVW / SPQNA / GENQNA
+files           : 파일
+
+3.1
+이미지 업로드 완료후 응답 결과는 JSON데이터 kitkatFileUploadCallBackFn 함수로 콜백
+*/
+
+
+
+/* 
+ * 안드로이드 kitkat 파일 업로드 콜백 함수
+ * 앱에서 파일업로드 인터페이스(/fcm000.do?goTo=fileUpload)를 호출후 결과 값을 콜백 함
+ * 구현할 페이지에서 재사용 불가능 할 경우 해당페이지에 kitkatFileUploadCallBackFn 함수를 재정의 하여 사용 하면 됨
+ * */
+var kitkatFileUploadCallBackFn = function( response ){
+	Progress.stop();
+	var res = response.dataset[0];
+	if(res.error != true){
+		
+		$('#fileBtnArea #file_path').val(res.file_path);
+		$('#fileBtnArea #file_name').val(res.file_name);
+		$('#fileBtnArea #file_org_name').val(res.file_org_name);
+		$('.fileNameInput:eq(0)').val(res.file_org_name);
+	}else{
+		alert(res.message);
+	}
+	
+		
+	};
+
+
+function getObject(elementID) {
+    if(document.getElementById && document.getElementById(elementID)) {
+        return document.getElementById(elementID);
+    }
+    else
+    if (document.all && document.all(elementID)) {
+        return document.all(elementID);
+    }
+    else
+    if (document.layers && document.layers[elementID]){
+        return getNN4Object(document, elementID);
+    }
+    else{
+        return false;
+    }
+}
+
+function isApplication() {
+	var deviceUserAgent = "WebView";
+	return (navigator.userAgent.indexOf(deviceUserAgent) > -1);
+}
+
+// 아이디/비번찾기 I/F - MOBILE openPopup에서 내장브라우져 호출함
+Fcm.popSearchIdnPwIF = function(args) {
+    args = nvl(args,{});
+
+    var callFrom = nvl(args.callFrom); // 호출하는 곳(LOGIN_POP:로그인팝업)     
+    var flag = nvl(args.flag);
+    var params  = "&callFrom=" + callFrom;
+
+	if (flag == "I") {
+		window.location = gDomains + "/fcm000.sf?goTo=idSearch" + params;
+    } else {    // 비밀번호 찾기
+    	window.location = gDomains + "/fcm000.sf?goTo=pwSearch" + params;
+    }
+}
+
+/**
+ * 작 성 자 : jaeyoungkim
+ * 작 성 일 : 2016-11-21
+ * 개    요 : 비밀번호 재설정 처리
+ * return값 : void
+*/
+Fcm.pwUpdate = function(args) {
+   args = nvl(args,{});
+   var callFrom = nvl(args.callFrom);
+
+   var goTo     = "pwUpdate";
+   var params  = "&dummy=";
+       params  += "&callFrom=" + callFrom;
+       
+   ajaxRequest({url:"/fcm000.sf?goTo="+goTo}, formToJSON("#pwChangeForm"), function(data) {
+
+	   if (data.error != true) {
+		   if (data == 1) {
+			   if (callFrom == "modifyMyInfo") {
+				   Fcm.goMenu({url:'/fmy001.sf?goTo=myPageMain', login_chk:'Y'});
+			   } else {
+				   alert("비밀번호가 변경되었습니다. 다시 로그인하여 주십시오.");
+                   Fcm.goLogout();
+			   }
+		   }
+	   } else {
+		   //console.log("error");
+	   }
+   });
+
+   return false;
+}
+
+Fcm.goPage = function(url) {
+	if (isApplication()) {
+		Fcm.openInNewWindow(url);
+	} else {
+		window.open(url, '_blank');
+	}
+}
+
+Fcm.numberWithCommas = function(value) {
+	return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+Fcm.getParameterByName = function(name, str) {
+	name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(str);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+Fcm.getAjaxErrorMsg = function(data) {
+	var obj = JSON.parse(data);
+	var errMsg = obj['message'];
+	if (errMsg == "AJAX_ERROR") {
+		errMsg = "오류가 발생하였습니다.\n정보를 조회할 수 없습니다.";
+	}
+	
+	alert(errMsg);
+	return false;
+}
