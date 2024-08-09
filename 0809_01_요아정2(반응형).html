@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      a {
+        text-decoration: none;
+      }
+      ul {
+        list-style: none;
+      }
+      #wrap .main {
+        width: 1440px;
+        margin: 0 auto;
+      }
+      #wrap .top {
+        height: 57px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      #wrap ul {
+        margin-right: 40px;
+        float: right;
+      }
+      #wrap ul li {
+        float: left;
+        height: 57px;
+      }
+      #wrap ul li a {
+        color: #000;
+        margin: 30px 0;
+        font-size: 19px;
+        font-weight: 600;
+        display: block;
+        text-align: center;
+        padding: 0 40px;
+      }
+      #wrap ul li img {
+        width: 100%;
+      }
+      #wrap ul li:nth-child(6) img {
+        width: 14px;
+        height: 13px;
+      }
+      #wrap ul li:nth-child(6) a {
+        color: #f73c5a;
+      }
+
+      .logo {
+        float: left;
+      }
+
+      .banner {
+        width: auto;
+        height: 900px;
+        background: url(images/요아정/main_made.png) center/cover;
+        margin: 20px;
+      }
+      .banner .inner {
+        position: relative;
+        width: 1067px;
+      }
+      .banner img {
+        position: absolute;
+      }
+      .banner img:nth-child(1) {
+        top: 330px;
+        left: 196px;
+      }
+      .banner img:nth-child(2) {
+        top: 190px;
+        left: 148px;
+      }
+      .banner p {
+        font-size: 20px;
+        width: 682px;
+        height: 20px;
+        position: absolute;
+        top: 430px;
+        left: 196px;
+      }
+
+      .middle {
+        padding: 68px 0;
+        display: flex;
+        justify-content: space-between;
+        width: 1280px;
+        margin: 0 auto;
+      }
+      .middle .left {
+        width: 262px;
+        position: relative;
+      }
+      .middle .right {
+      }
+      .middle .left p {
+        width: 397px;
+        height: 92px;
+        background-color: #fff;
+        font-size: 38px;
+      }
+
+      .menu {
+        display: flex;
+        justify-content: left;
+      }
+      .menu img {
+        width: 30px;
+      }
+      .menu .h1 {
+        font-size: 50px;
+      }
+      .menu .h1::before {
+        content: ">";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3px;
+        height: 90%;
+        background: #cbcbcb;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <div class="main">
+        <div class="top">
+          <div class="logo">
+            <a href="#"><img src="images/요아정/header_01.png" alt="" /></a>
+          </div>
+          <ul>
+            <li>
+              <a href="#">브랜드</a>
+            </li>
+            <li>
+              <a href="#">메뉴&매장</a>
+            </li>
+            <li>
+              <a href="#">창업</a>
+            </li>
+            <li>
+              <a href="#">멤버십</a>
+            </li>
+            <li>
+              <a href="#">커뮤니티</a>
+            </li>
+            <li>
+              <a href="#"
+                ><img src="images/요아정/header_02.png" alt="" /> 쇼핑몰</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="banner">
+        <div class="inner">
+          <img src="images/요아정/a_08.png" alt="" />
+          <img src="images/요아정/a_07.png" alt="" />
+          <p>신선하고 건강한 디저트</p>
+        </div>
+      </div>
+      <div class="middle"></div>
+      <div class="menu">
+        <h1><img src="images/요아정/a_13.png" alt="13" />MENU</h1>
+      </div>
+
+      <footer>
+        <img src="images/요아정/footer_01.png" alt="" />
+        <div class="foot">
+          <ul class="left">
+            <li>
+              <a href="#"><strong>주식회사</strong>트릴리언즈</a>
+            </li>
+            <li><a href="#">비즈니스</a></li>
+            <li><a href="#">검색의 원리</a></li>
+          </ul>
+          <ul class="right">
+            <li><a href="#">개인정보처리방침</a></li>
+            <li><a href="#">약관</a></li>
+            <li><a href="#">설정</a></li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

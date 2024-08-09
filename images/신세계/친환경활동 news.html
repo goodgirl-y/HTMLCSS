@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      a {
+        text-decoration: none;
+      }
+      ul {
+        list-style: none;
+      }
+      .wrap {
+        font: 15px "NanumBarunGothic", "Pretendard", "Nanum Gothic", "Dotum",
+          "applegothic", sans-serif;
+      }
+      ul.wrap {
+        width: 95%;
+        max-width: 940px;
+        margin: 0 auto;
+        display: flex;
+        gap: 4%;
+        flex-wrap: wrap;
+      }
+      .wrap .top {
+        border: 1px solid #ddd;
+        display: block;
+        padding-left: 460px;
+        position: relative;
+        margin-bottom: 30px;
+        width: auto;
+        height: 289px;
+        margin-top: 30px;
+      }
+      .wrap .top img {
+        position: absolute;
+      }
+      .top li.txt {
+      }
+
+      ul.wrap li {
+        flex: 1 1 48%;
+        padding-top: 40px;
+        margin-right: 30px;
+      }
+      ul.wrap li a {
+        color: #444;
+      }
+      ul.wrap div.top li img {
+        width: 460px;
+        height: 289px;
+        object-fit: cover;
+      }
+      ul.wrap li img {
+        width: 100%;
+        height: 183px;
+        object-fit: cover;
+        left: 0;
+        top: 0;
+      }
+      div.top li .txt {
+        padding: 25px 30px 35px;
+      }
+
+      .middle {
+        width: 100%;
+        display: flex;
+      }
+      .middle li {
+        width: 100%;
+        height: 291px;
+        border: 1px solid #ddd;
+      }
+      .middle li img {
+        top: 0;
+      }
+
+      .info span {
+        width: 261px;
+        height: 20px;
+        color: #444;
+        display: flex;
+      }
+      .info .date {
+        float: left;
+      }
+      .info .form {
+        float: right;
+      }
+
+      ul.wrap li .txt {
+        margin-top: 20px;
+        padding-left: 18px;
+      }
+
+      ul.wrap li .txt .content {
+        font-size: 15px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        height: 100px;
+        overflow: hidden;
+      }
+      ul.wrap li p.title {
+        font-size: 20px;
+        margin-bottom: 15px;
+        font-weight: bold;
+        line-height: 28px;
+      }
+
+      @media screen and (max-width: 960px) {
+        br {
+          display: none;
+        }
+      }
+      @media screen and (max-width: 640px) {
+      }
+    </style>
+  </head>
+  <body>
+    <ul class="wrap">
+      <div class="top">
+        <a href="#">
+          <li>
+            <p><img src="images/s1.jpg" alt="s1" /></p>
+            <div class="txt">
+              <p class="title">
+                신세계푸드, 역대급 무더위에 삼계탕 간편식 인기 "앗 뜨거"
+              </p>
+              <p class="content">
+                역대급 무더위와 고물가 현상에 합리적인 가격으로 간편하게 보양<br />
+                간편식 즐기는 ‘집보신’ 수요 늘어 호텔컬렉션, 올반 등 삼계탕
+                간편식 7월 판매량 270% 급증…5~7월 판매량 50만개 돌파, 역대 최고
+                수준 <br />
+                전문점 수준의 맛과 품질 메뉴 외식물가 대비 3분의 2 수준의
+                가격으로<br />
+                즐길 수 있어 각광 무더위 길어질 것으로 예상…8월말까지 삼계탕
+                간편식 판매 강화 나서
+              </p>
+              <p class="info">
+                <span class="date">2024.08.07</span>
+                <span class="from">보도자료</span>
+              </p>
+            </div>
+          </li></a
+        >
+      </div>
+      <div class="middle">
+        <li>
+          <p><img src="images/s1.jpg" alt="s1" /></p>
+          <div class="txt">
+            <p class="title">
+              신세계푸드, 역대급 무더위에 삼계탕 간편식 인기 “앗 뜨거”
+            </p>
+            <p class="info">
+              <span class="date"> 2024.08.05 </span>
+              <span class="from">보도자료</span>
+            </p>
+          </div>
+        </li>
+        <li>
+          <p><img src="images/s2.jpg" alt="s2" /></p>
+          <div class="txt">
+            <p class="title">
+              신세계푸드, '데블스도어', 에반 윌리엄스 협업 '하이볼 해피 아워
+              실시
+            </p>
+            <p class="info">
+              <span class="date"> 2024.08.05 </span>
+              <span class="from">보도자료</span>
+            </p>
+          </div>
+        </li>
+        <li>
+          <p><img src="images/s3.jpg" alt="s3" /></p>
+          <div class="txt">
+            <p class="title">
+              신세계푸드,와인앤모어 협업…와인 애호가 위한 ‘치즈 케이크 플래터’
+              출시
+            </p>
+            <p class="info">
+              <span class="date"> 2024.07.31 </span>
+              <span class="from">보도자료</span>
+            </p>
+          </div>
+        </li>
+      </div>
+    </ul>
+  </body>
+</html>
