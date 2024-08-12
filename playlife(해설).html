@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>playlife</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        ul{list-style: none;}
+        a{text-decoration: none;}
+        .top{position: fixed;width: 100%;height: 40px;background: #222;left: 0;top: 0;line-height: 40px;font-size: 14px;text-align: center;opacity: 0.5;}
+        .top .close{position: absolute;right: 20px;top: 50%;transform: translateY(-50%);}
+        .main{position: relative;top: 40px;display: flex;}
+        .main .left{width: 40%;position: sticky;top: 0;height: 100%;}
+        .main .left p{width: 100%;height: 100vh;}
+        .main .left p img{width: 100%;height: 100%;object-fit: cover;}
+        .main .right{width: 60%;}
+        .main .right>ul>li{flex: 0 1 40%;}
+        .main .right>ul>li li > p{padding-bottom: 125%;box-sizing: border-box;}
+        .main .right>ul>li img{width: 100%;height: 100%;object-fit: cover;position: absolute;}
+        .reverse{flex-direction: row-reverse;}
+
+        @media screen and (max-width:1199px){
+            .main{flex-direction: column;}
+            .main .left{width: 100%;position: relative;}            
+            .main .right{width: 90%;margin: 0 auto;padding: 44px 0;}
+            .main .right>ul{display: block;}
+            .main .right>ul >li ul{display: flex;gap: 0 24px;margin-bottom: 22px;flex: 1 1 45%;}
+        }
+        @media screen and (max-width:719px){
+            .main .right>ul >li ul{flex-direction: column;}
+        }
+    </style>
+  </head>
+  <body>
+    <div class="top">
+      <p>
+        <a href="#"
+          >마음 성장 플랫폼, 플레이라이프</a><a href="#"><img src="images/playlife/playlife_logo.png" alt="playlife"
+        /></a>
+      </p>
+      </div>
+      <div class="main">
+      <div class="left">
+          <li>
+            <p><img src="images/playlife/mob.jpg" alt="mob"></p>
+            <p>PEOPLE</p>
+                <h2>기록은 미래의 나에게 보내는 다정한 안부</h2>
+                <p>"기록이 진해질수록 허무함은 의미해져요"</p>
+                <p><span>김신지</span><span>에세이 작가</span></p>
+          </li>
+      </div>
+      <div class="main reverse">
+        
+      </div>
+</div>
+      
+
+
+
+
+
+      <!-- <div class="page">
+        <div class="left">
+          <img src="images/" alt="mob" />
+          <div class="txt">
+            <p>PEOPLE</p>
+            <h2>기록은 미래의 나에게 보내는 다정한 안부</h2>
+            <p>"기록이 진해질수록 허무함은 의미해져요"</p>
+            <p><span>김신지</span><span>에세이 작가</span></p>
+          </div> -->
+        </div>
+        <div class="right">
+          <div class="list1">
+            <div class="loop">
+              <a href="#"><img src="images/playlife/M-1.jpg" alt="M-1" /></a>
+              <p>PEOPLE</p>
+              <h2>이어지는 삶 속에서 새로 발견한 것</h2>
+              <p>"나만의 목표를 갖고 작은 시도를 계속 해보는게 중요해요"</p>
+              <p>
+                <span><strong>박찬종</strong></span
+                ><span>크리에이터, 패러사이클링 선수</span>
+              </p>
+            </div>
+            <div class="loop">
+              <a href="#"><img src="images/playlife/M-2.jpg" alt="M-2" /></a>
+              <p>PEOPLE</p>
+              <h2>잘하고 싶은 마음보다 일단 '시작'하는 마음으로</h2>
+              <p>
+                "작은 목표를 향해 한 걸음, 한 걸음 내딛다 보면 '끝'도
+                있더라고요"
+              </p>
+              <p>
+                <span><strong>서귤</strong></span
+                ><span>작가</span>
+              </p>
+            </div>
+          </div>
+          <div class="list2">
+            <div class="loop">
+              <a href="#"><img src="images/playlife/M-3.jpg" alt="M-3" /></a>
+              <p>PEOPLE</p>
+              <h2>이어지는 삶 속에서 새로 발견한 것</h2>
+              <p>"살아가는 모든 순간, 아이와 같은 마음이 필요해요"</p>
+              <p>
+                <span><strong>누아</strong></span
+                ><span>일러스트레이터</span>
+              </p>
+            </div>
+            <div class="loop">
+              <a href="#"><img src="images/playlife/M-4.jpg" alt="M-4" /></a>
+              <p>PEOPLE</p>
+              <h2>기사를 쓰는데 이렇게까지</h2>
+              <p>
+                "휠체어를 타고 바퀴를 굴리자마자 ‘내가 알던 세상이 아니구나.’
+                느꼈어요."
+              </p>
+              <p>
+                <span><strong>남형도</strong></span
+                ><span>기자</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
