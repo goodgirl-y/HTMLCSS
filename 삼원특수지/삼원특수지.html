@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      a {
+        text-decoration: none;
+      }
+      ul {
+        list-style: none;
+      }
+      .main {
+        display: flex;
+        padding: 0 96px;
+      }
+      .main .left {
+        position: sticky;
+        width: 50%;
+        height: 100%;
+        top: 100px;
+        margin: 0;
+      }
+      .main .left p {
+        font-size: 22px;
+        color: rgba(0, 0, 0, 0.5);
+      }
+      .main .left h1 {
+        font-size: 96px;
+        margin: 16px 0;
+      }
+      .main .left .box {
+        width: 617px;
+        height: 56px;
+        margin: 32px 0;
+        justify-content: space-between;
+        ta
+      }
+      .main .left .box a {
+        border: 1px solid #000;
+        width: 167px;
+        height: 56px;
+        padding: 13px 35px;
+        border-radius: 30px;
+        color: #000;
+        font-weight: bold;
+        position: relative;
+      }
+      .main .left .box a::after{content: "";position: absolute;right: 0;width: 20px;height: 20px;background: url(https://www.samwonpaper.com/resources/_asset/pc/common/images/icon/icon-more-long-arrow-black.png) no-repeat;right: 15px;}
+      .main .left div:first-child a {
+        padding: 0 32px;
+        font-size: 20px;
+      }
+      .main .left .board {
+        width: 495px;
+        height: 714px;
+        position: relative;
+        left: 30px;
+        margin: 90px 0;
+      }
+      .main .left .board img{position: absolute;left: 50%;top: 0;transform: translateX(-50%);}
+      .main .left .board .txt {
+        position: absolute;
+        top: 80px;left: 20px;
+      }
+      .main .left .board h3 {
+        font-size: 40px;
+        color: #3F3F46;letter-spacing: -2px;
+      }
+      .main .left .board .july {
+        font-size: 16px;
+        padding: 45px 0;
+        color: #000;
+      }
+      .main .right {
+        width: 952px;
+        height: 2899px;
+      }
+      .main .right ul li{width: 184px;position: relative;padding: 28px 24px;}
+      .main .right ul li ul:nth-child(2){}
+      
+      .main .right ul li ul li{margin: 20px 0;top: 330px;}
+      .main .right ul li ul li div{width: 344px;height: 123px;background-color: #000;position: absolute;left: 24px;bottom: 32px;color: #fff;}
+      
+      .main .right ul li ul li div p{color: #ffffff66;font-size: 16px;}
+      .main .right ul li ul li div h3{font-size: 24px; margin: 4px 0 0;}
+      .main .right ul li ul li img{width: 344px;height: 496px;}
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <div class="left">
+        <p>Samwon Gray Paper : 다채로운 매력의 그레이 페이퍼</p>
+        <h1>Monthly Paper</h1>
+        <div class="box"><a href="#">제품보기</a></div>
+        <div class="board">
+            <a href="#">
+                <img src="images/gray.jpg" alt="gray">
+                    <div class="txt">
+                <h3>다채로운 매력의 소유자,<br> 그레이 페이퍼를<br> 소개합니다.</h3>
+                <p class="july">July 2024</p>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <ul>
+          <li>
+            <ul>
+              <li>
+                <a href="#"><img src="images/1.png" alt="" /></a>
+                <div>
+                      <p>시리오러프</p>
+                      <h3>시리오러프</h3>
+                </div>
+              </li>
+              <li>
+                <a href="#"><img src="images/2.png" alt="" /></a>
+                <div>
+                  <p>마테리카</p>
+                  <h3>마테리카</h3>
+                </div>
+              </li>
+              <li>
+                <a href="#"><img src="images/3.png" alt="" /></a>
+                <div>
+                  <p>큐리어스 스킨</p>
+                  <h3>큐리어스 스킨</h3>
+                </div>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <a href="#"><img src="images/4.png" alt="" /></a>
+                <div>
+                  <p>문보드</p>
+                  <h3>문보드</h3>
+                </div>
+              </li>
+              <li>
+                <a href="#"><img src="images/5.png" alt="" /></a>
+                <div>
+                  <p>리메이크</p>
+                  <h3>리메이크</h3>
+                </div>
+              </li>
+              <li>
+                <a href="#"><img src="images/6.png" alt="" /></a>
+                <div>
+                  <p>큐리어스 매터</p>
+                  <h3>큐리어스 매터</h3>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
