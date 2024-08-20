@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      p.demo {
+        display: none;
+      }
+    </style>
+    <script>
+      //1. 웹페이지가 모두 로드된 후 실행되는 코드
+      window.onload;
+      function myFnc1() {
+        document.getElementsByTagName("p")[0].style.display = "block";
+        document.getElementsByTagName("p")[1].style.display = "none";
+      }
+      /*indecs 번호는 무조건 0번부터 들어감*/
+      function myFnc2() {
+        document.getElementsByTagName("p")[0].style.display = "none";
+        document.getElementsByTagName("p")[1].style.display = "block";
+      }
+      /*1번이 나올때는 2번 안보이게 block, none처리*/
+    </script>
+  </head>
+  <body>
+    <h2>Demo JavaScript in Body</h2>
+    <p class="demo">demo1</p>
+    <p class="demo">demo2</p>
+    <button type="button" onclick="myFnc1()">demo1</button>
+    <button type="button" onclick="myFnc2()">demo2</button>
+    <p>First Name: <input name="fname" type="text" value="Michael" /></p>
+    <p>First Name: <input name="fname" type="text" value="Doug" /></p>
+    <script>
+      document.getElementsByTagName("p")[0].style.display = "block";
+      document.getElementsByName("fname")[0].value = "미첼";
+    </script>
+  </body>
+</html>
