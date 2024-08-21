@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      a {
+        text-decoration: none;
+      }
+      section {
+        display: block;
+        justify-content: center;
+        align-items: center;
+
+        color: #fff80;
+      }
+      section div {
+        width: 200px;
+        height: 54px;
+        background-color: #333;
+        line-height: 50px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 20px;
+        color: #fff;
+        border-radius: 40px;
+        float: left;
+        margin: 0 10px;
+      }
+      
+      {position: fixed;background: da291c;}
+
+      /* div#popup {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border: 1px solid;
+        background: #fff;
+        width: 500px;
+        height: 500px;
+      }
+      section.bg {
+        background: rgba(0, 0, 0, 0.8);
+      } */
+    </style>
+  </head>
+  <body>
+    <section>
+      <div><a href="#">연구개발</a></div>
+      <div><a href="#">기초연구</a></div>
+      <div><a href="#">패키지연구</a></div>
+      <div><a href="#">기술연구</a></div>
+      <div><a href="#">안전관리</a></div>
+      <div><a href="#">연구전략</a></div>
+    </section>
+    <div>
+        <script>
+              document.querySelector("section>div").onclick = function (e) {
+                console.log("실행됨");
+                document.querySelector("section").style.background = ;
+                this.style.background = "#da291c";
+          this.style.color = "red";
+    </div>
+    <!-- <div id="popup">
+      popup
+      <a href="#">close</a>
+    </div> -->
+    <!-- <script>
+      //   document.querySelector("section>p").onclick = function (e) {
+      //     // console.log("실행됨");
+      //     document.querySelector("section").style.background = "rgba(0,0,0,0.8)";
+      //     // document.querySelector("section>p").style.background =
+      //     //   "rgba(255,255,255,0.5)";
+      //     // this.style.background = "rgba(255,255,255,0.5)";
+      //     // this.style.color = "red";
+      //     this.classList.toggle("on");
+      //   };
+      //   let ->변수
+      let btn = document.querySelector("section>p");
+      let sec = document.querySelector("#popup");
+      let secA = document.querySelector("#popup a");
+
+      btn.onclick = function (e) {
+        e.preventDefault();
+        sec.classList.toggle("bg");
+        this.classList.toggle("on");
+      };
+      document.querySelector("popup").onclick =
+      document.querySelector("close").onclick =
+    </script> -->
+  </body>
+</html>
