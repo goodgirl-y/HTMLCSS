@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function myfnc(){
+        btn.forEach(function(v,k){
+            v.style.backgroundColor="transpatent"
+        })
+        let btn =document.querySelectorAll(".lush ul li")
+        btn.forEach(function(v,k){
+            let a =v.style.backgroundImages
+            console.log(a)
+            v.style.backgroundImages+"url(images/ico_main_value0"+(k+1)+"svg)"
+            v.style.onmouseenter=function({
+                myfnc()
+
+            }
+        })
+      }
+    </script>
+  </body>
+</html>
