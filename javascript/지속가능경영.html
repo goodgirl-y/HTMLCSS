@@ -38,6 +38,33 @@
       <li><img src="images/img_sustain_pc_hover_1_4.jpg" alt="pc_4" /></li>
       <li><img src="images/img_sustain_pc_hover_1_5.jpg" alt="pc_5" /></li>
     </ul>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script>
+      // $(function(){
+      //   $(".list li").hover(function(){
+      //     let i = $(this).index();
+      //     console.log(i);
+      //     $(".list li img").attr("src","images/img_sustain_pc_hover_1_1.jpg")
+      //   },function(){
+
+      //   })
+      // })
+
+
+      // $(function(){
+      //   $(".list li").each(function(index,elem){
+      //     console.log(elem);
+      //   });
+
+      $(".list li").hover(function(){
+        let i = $(this).index()
+        $(".list li").each(function(index,elem){
+          $(elem).find("img").attr("src",`images/img_sustain_pc_hover_{i+1}_${index+1}.jpg`)
+        })
+      },function(){
+
+      })
+    </script>
 
     <script>
       let btn = document.querySelectorAll(".list li");
