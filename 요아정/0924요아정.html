@@ -9,28 +9,32 @@
         *{margin: 0;padding: 0;}
         ul{list-style: none;}
         a{color: #333;text-decoration: none;}
-        body{background-color: #fff}
-        #wrap{height: 80px;}
+        body{background-color: #fff;}
+        #wrap{width: 100%; height: 80px;margin: 0 auto;}
         #wrap header{height: 80px;}
-        #wrap header .top{width: 1080px;margin: 0 auto;}
-        #wrap .logo{float: left;width: 213px; height: 69px;position: relative;top: 15px;}
-        #wrap .logo a{display: block;width: 100%;height: 100%;background-image: url(images/header_01.png);background-repeat: no-repeat;background-size: 180px 59px;position: absolute;top: 50%;transform: translateY(-50%);}
+        #wrap header .top{width: 1200px;margin: 0 auto;}
+        #wrap .logo{float: left;width: 128px; height: 80px;position: relative;top: 15px;}
+        #wrap .logo a{display: block;width: 100%;height: 100%;background-image: url(images/logonew.png);background-repeat: no-repeat;background-size: 128px 80px;position: absolute;top: 50%;transform: translateY(-50%);}
         /* 로고그림 부위 정한거임 */
-        #wrap .menu{float: right;}
+        #wrap .menu{float: right;padding: 20px;}
         #wrap .menu > ul{height: 50px;}
         #wrap .menu > ul > li{float: left;position: relative;width: 142px;}
-        #wrap .menu > ul > li:last-child{width: 80px;height: 35px;background-color: #F63C5A;border-radius: 12px;position: absolute;right: 0;top: 32px;}/*?????*/
-        #wrap .menu > ul > li:last-child a{color: pink;}
+        #wrap .menu > ul > li:last-child a{padding: 20px;}
+        #wrap .menu > ul > li:nth-child(6) a{width: 102px;height: 40px;}
         #wrap .menu > ul > li > a{display: block;line-height: 100px;text-align: center;}
         #wrap .menu > ul > li > a:hover{color: #F63C5A;font-weight: bold;}
-        #wrap .menu > ul > li > a::after{content: "";position: absolute;left: 30px; bottom: 0;width: 60%;height: 10px;border-radius: 20px 20px 0 0 ; background-color: #F63C5A;transform: scaleX(0);transition: 0.5s;}
+        #wrap .menu > ul > li > a::after{content: "";position: absolute;left: 30px; bottom: 0;width: 60%;height: 10px;border-radius: 20px 20px 0 0 ; background-color: #FFE7E7;transform: scaleX(0);transition: 0.5s;}
         #wrap .menu > ul > li:hover > a::after{transform: scaleX(1);}
         #wrap .menu > ul .sub{height: 0;overflow: hidden;transition: 0.5s;position: absolute;left: 0;top: 100px;width: 100%;z-index: 1;}
         #wrap .menu > ul:hover .sub{height: 320px;padding: 20px 0;}
         #wrap .menu > ul .sub li{line-height: 40px;text-align: center;}
         #wrap .menu > ul .sub li:hover a{color: #F63C5A;display: block;}
         .bg{position: absolute;left: 0;top: 100px;background-color: #fff;width: 100%;height: 0;transition: 0.5s;border-top: 1px solid transparent;}
-        #wrap .headimg{}
+        /*#wrap .mainbox{width: 960px;height: 175px;}*/
+        #wrap .mainbox{width: 960px;height: 180px;margin: 0 auto;}
+        #wrap .mainbox .main_menu h2{font-size: 80px;font-weight: bold; color: #F63C5A;text-align: center;}
+        #wrap .mainbox .menulist{width: 529px;height: 30px; margin: 0 auto;padding: 20px 0;}
+        #wrap .mainbox .menulist ul li{float: left;margin: 0 15px;}
     </style>
 </head>
 <body>
@@ -71,13 +75,55 @@
                         <li><a href="#">가맹문의</a></li>
                     </ul>
             </li>
-                <li><a href="#">쇼핑몰</a>
+                <li><a href="#"><img src="images/ping.png" alt=""></a>
             </li>
             </ul>
         <div class="bg"></div>
     </div>
         </div>
-        <div class="headimg"></div>
+        <div class="mainbox">
+            <div class="main_menu"><h2>Yogurt Icecream's Menu</h2></div>
+            <div class="menulist">
+                <ul>
+                    <li><a href="">토핑</a></li>
+                    <li><a href="">시그니처</a></li>
+                    <li><a href="">요거트 아이스크림</a></li>
+                    <li><a href="">그릭요거트</a></li>
+                </ul>
+            </div>
+            <div class="menulistbox">
+                <div class="txt">
+                    <h3>TOPPING</h3>
+                    <p>CHOCO</p>
+                    <p>CHIPS</p>
+                    <p>FRUIT</p>
+                    <p>POPS</p>
+                </div>
+                <div class="imgbox">
+                    <ul>
+                        <li><img src="images/jam.png" alt=""></li>
+                        <li><img src="images/name_box.png" alt=""></li>
+                        <p>상큼하고 달달한 빨간 생자몽!</p>
+                    </ul>
+                    <ul>
+                        <li><img src="images/str.png" alt=""></li>
+                        <li><img src="images/name_box.png" alt=""></li>
+                        <p>달콤함의 정석, 생딸기!</p>
+                    </ul>
+                    <ul>
+                        <li><img src="images/fin.png" alt=""></li>
+                        <li><img src="images/name_box.png" alt=""></li>
+                        <p>새콤달콤 이국적인 맛, 파인애플!</p>
+                    </ul>
+                    <ul>
+                        <li><img src="images/jam.png" alt=""></li>
+                        <li><img src="images/name_box.png" alt=""></li>
+                        <p>부드러운 달콤함, 바나나!</p>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
     </header>
     </div>
 </body>
