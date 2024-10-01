@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        ul{list-style: none;}
+        a{text-decoration: none;}
+        #wrap{padding: 100px;}
+        .title{text-align: center;margin-bottom: 30px;font-size: 80px;font-weight: 600;}
+        .tab{text-align: center;display: flex;justify-content: center;margin-bottom: 100px;gap: 60px;}
+        .tab .ac a{color: #999;display: inline-block;font-size: 22px;font-weight: 600;}
+        .tab .ac a::after{content: "";width: 100%;height: 2px;display: block; background:#184100;color: #184100;}
+        .list{margin: 0 auto;}
+        .list .content{display: flex;flex-wrap: wrap;gap: 10px;justify-content: space-between;}
+        .list .content .con{padding: 20px 0;}
+        .list .content .con img{width: 476px;}
+        .list .content .txt{padding: 30px 0;font-size: 18px;}
+        .list .content .txt .name{font-weight: 600;color: #184100;}
+        .list .content .txt p{margin-top: 10px;font-weight: 300;color: #000;}
+    </style>
+</head>
+<body>
+    <div id="wrap">
+            <div class="title">PRODUCTS</div>
+            <ul class="tab">
+                <li class="ac">
+                    <a href="#">ALL</a>
+                </li>
+                <li class="ac"><a href="#">Dermasona</a></li>
+                <li class="ac">
+                    <a href="#">Hot & Cool</a>
+                </li>
+                <li class="ac"><a href="#">Haute Liang</a>
+                </li>
+                <li class="ac"><a href="#">Gel</a></li>
+            </ul>
+            <div class="list">
+                <ul class="content" id="tab1">
+                    <li><a href="#"><div class="con"><img src="images/goodsdata149227_0.jpg" alt=""><div class="txt"><p class="name">Quadthera</p><p>세계최초 4중 주파수 교차초음파<br>
+                        홈케어 뷰티 디바이스<br>
+                        1/3/10/17MHz</p></div></div></a></li>
+                    <li><a href="#"><div class="con"><img src="images/goodsdata161309_0.png" alt=""><div class="txt"><p class="name">Hot & Cool Glow On</p><p>6 in 1 냉온열 EMS 갈바닉 <br>
+                        멀티 뷰티 디바이스</p></div></div></a></li>
+                    <li><a href="#"><div class="con"><img src="images/goodsdata177651_0.jpg" alt=""><div class="txt"><p class="name">Hot & Cool Glow On Petite</p><p>초소형 냉온열 갈바닉 진동<br>
+                        멀티 뷰티 디바이스</p></div></div></a></li>
+                    <li><a href="#"><div class="con"><img src="images/goodsdata151112_0.jpg" alt=""><div class="txt"><p class="name">Haute Liang</p><p>헤드 교체 식 LED 미세전류 진동 <br>
+                        멀티 뷰티 디바이스</p></div></div></a></li>
+                    <li><a href="#"><div class="con"><img src="images/goodsdata159279_0.png" alt=""><div class="txt"><p class="name">Glow Boosting Gel</p><p>건강한 광채를 선사하는 <br>
+                        디바이스 전용 젤</p></div></div></a></li>
+                </ul>
+                <ul class="content" id="tab2">
+                    <li><a href="#"><div class="con"><img src="images/goodsdata149227_0.jpg" alt=""><div class="txt"><p class="name">Quadthera</p><p>세계최초 4중 주파수 교차초음파<br>
+                        홈케어 뷰티 디바이스<br>
+                        1/3/10/17MHz</p></div></div></a></li>
+                </ul>
+                <ul class="content" id="tab3">
+                    <li><a href="#"><div class="con"><img src="images/goodsdata161309_0.png" alt=""><div class="txt"><p class="name">Hot & Cool Glow On</p><p>6 in 1 냉온열 EMS 갈바닉 <br>
+                        멀티 뷰티 디바이스</p></div></div></a></li>
+                    <li><a href="#"><div class="con"><img src="images/goodsdata177651_0.jpg" alt=""><div class="txt"><p class="name">Hot & Cool Glow On Petite</p><p>초소형 냉온열 갈바닉 진동<br>
+                        멀티 뷰티 디바이스</p></div></div></a></li>
+                </ul>
+                <ul class="content" id="tab4">
+                    <li><a href="#"><div class="con"><img src="images/goodsdata151112_0.jpg" alt=""><div class="txt"><p class="name">Haute Liang</p><p>헤드 교체 식 LED 미세전류 진동 <br>
+                        멀티 뷰티 디바이스</p></div></div></a></li>
+                </ul>
+                <ul class="content" id="tab5">
+                    <li><a href="#"><div class="con"><img src="images/goodsdata159279_0.png" alt=""><div class="txt"><p class="name">Glow Boosting Gel</p><p>건강한 광채를 선사하는 <br>
+                        디바이스 전용 젤</p></div></div></a></li>
+                </ul>
+            </div>
+    </div>
+    <script>
+        const $ul = document.querySelector(".tab");
+        const $contents = document.querySelectorAll(".content");
+
+        $ul.addEventListener("click", (v)=>{
+            if(!v.target.classList.contains("tab-button")){
+                return;
+            }
+        const focusedTabled = v.target.dataset.tabSection;
+
+        $section.forEach(($section)=>{
+            if (section.id=== focusedTabId) {
+          $section.removeAttribute('hidden');
+        } else {
+          $section.setAttribute('hidden', true);
+        }
+    });
+});
+
+
+
+
+
+        // let conLi = document.querySelectorAll(".content li")
+        // let tabLi = document.querySelectorAll(".tab li")
+        // let con = document.querySelectorAll(".content")
+        // let bg = ["#184100"]
+        // con();
+        // tabLi[0].classList.add("on");
+        // con[0].classList.add("on");
+        // tabLi[0].style.color = bgcolor[0];
+        // function con(){
+        //     conLi.forEach(function(v,k){
+        //     v.style.opacity = "0";
+                
+        //     })
+        //     btnLi.forEach(function(v,k){
+        //     v.style.backgroundColor = "transparent"
+        //     v.style.color = "#184100"
+        //     })
+        //     tabLi.forEach(function(v,k){
+        //         v.classList.remove("on");
+        //     })
+        //     con.forEach(function(v,k){
+        //         v.classList.remove("on");
+        //     })
+        // }
+        // conLi[0].style.opacity = "1"
+        // btnLi.forEach(function(v,k){
+        //     v.onclick = function(){
+        //         con();
+        //         conLi[k].style.opacity = "1";
+        //         document.querySelector("#wrap").style.backgroundColor = bg[k];
+        //         this.style.backgroundColor = bgcolor[k];
+        //         this.style.color = "#fff";
+        //         conLi[k].querySelector(".inner h1").classList.add("on")
+        //         conLi[k].querySelector(".inner .txt").classList.add("on")
+        //     }
+        // })
+    </script>
+</body>
+</html>
